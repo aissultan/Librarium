@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import * as $ from 'jquery';
-import 'slick-carousel';
+
 
 @Component({
   selector: 'app-home',
