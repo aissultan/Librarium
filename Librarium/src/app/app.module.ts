@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+
 import { RegistrationComponent } from './registration/registration.component';
 import { HomeComponent } from './home/home.component';
 import { BooksComponent } from './books/books.component';
@@ -15,6 +17,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
 @NgModule({
   declarations: [
     AppComponent,
+    ForgotPasswordComponent,
+ 
     RegistrationComponent,
     HomeComponent,
     BooksComponent,
