@@ -1,0 +1,25 @@
+<body>
+    <div class="container">
+        <img src="/assets/images/book.png" alt="" width="100px" id="book1">
+        <div class="zagolovok">
+            <img src="/assets/images/logotipe.png" alt="" id="logo" width="30px">
+            <h1>Librarium</h1>
+        </div>
+        <div class="form-box">
+            <div class="sign-in"><h1>Sign In</h1></div>
+            <form class="form" action="/users/sign_in" method="post">
+                <label for="inputEmailLogin"></label>
+                <input type="email" placeholder="Email or Login" id="inputEmailLogin" name="email">
+                <label for="inputPassword"></label>
+                <input type="password" placeholder="Password" id="inputPassword" name="password">
+                <div id="newPassword">
+                    <a routerLink="/password" >Password Trouble?</a>
+                </div>
+                <input type="submit" value="Sign in Librarium" id="submit">
+                <div class="sign_up">Don't have an account?
+                    <a href="" class="raw-link">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
