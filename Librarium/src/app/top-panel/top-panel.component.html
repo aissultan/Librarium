@@ -1,1 +1,16 @@
-<p>top-panel works!</p>
+<!-- Top-Bar Panel -->
+<div id="top-bar">
+    <img id="logo-img" src="assets/images/Logo.png">
+    <h2 id="logo-text">Librarium</h2>
+    <div id="categories">
+        <a [routerLink]="['/home']">Home</a>
+        <a [routerLink]="['/books']">Books</a>
+        <a [routerLink]="['/contact']">Contact</a>
+    </div>
+    <div id="login-block">
+        <a [routerLink]="['/sign-in']">Sign in</a>
+        <a [routerLink]="['/sign-up']">Sign up</a>
+    </div>
+</div>
+
+<div id="line"></div>

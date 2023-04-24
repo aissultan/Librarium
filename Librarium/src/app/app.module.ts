@@ -13,6 +13,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { TopPanelComponent } from './top-panel/top-panel.component';
 import { BottomPanelComponent } from './bottom-panel/bottom-panel.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
