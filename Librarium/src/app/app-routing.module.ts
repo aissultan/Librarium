@@ -8,11 +8,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 const routes: Routes = [
+
   { path: 'home', component: HomeComponent },
   { path: 'books', component: BooksComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
-  {path:'password',component : ForgotPasswordComponent},
+  { path: 'password', component: ForgotPasswordComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
 
@@ -22,4 +23,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }
