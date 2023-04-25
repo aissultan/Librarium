@@ -1,0 +1,47 @@
+<nav>
+    <h1>asdjkhasjdhkajhksdjhk</h1>
+</nav>
+<div class="profile-container">
+    <div class="profile-info">
+        <h1>My Profile</h1>
+        <p>Name: {{name}}</p>
+        <p>Location: {{location}}</p>
+        <p>Email: {{email}}</p>
+      </div>
+    <div class="profile-tabs">
+      <div class="profile-tab" [ngClass]="{'active': activeTab === 'books'}" (click)="setActiveTab('books')">Favorite Books</div>
+      <div class="profile-tab" [ngClass]="{'active': activeTab === 'stories'}" (click)="setActiveTab('stories')">My Stories</div>
+      <div class="profile-tab" [ngClass]="{'active': activeTab === 'reviews'}" (click)="setActiveTab('reviews')">Reviews</div>
+    </div>
+  
+    <div class="profile-content">
+      <div class="profile-books" [ngClass]="{'active': activeTab === 'books'}">
+        <h2>Favorite Books</h2>
+        <ul>
+          <li>The Alchemist by Paulo Coelho</li>
+          <li>1984 by George Orwell</li>
+          <li>The Great Gatsby by F. Scott Fitzgerald</li>
+        </ul>
+      </div>
+  
+      <div class="profile-stories" [ngClass]="{'active': activeTab === 'stories'}">
+        <h2>My Stories</h2>
+        <ul>
+          <li><a href="#">The Adventure of a Lifetime</a></li>
+          <li><a href="#">The Mystery of the Missing Diamond</a></li>
+        </ul>
+      </div>
+  
+      <div class="profile-reviews" [ngClass]="{'active': activeTab === 'reviews'}">
+        <h2>Reviews</h2>
+        <ul>
+          <li><a href="#">HTML review for beginner developers</a></li>
+          <li><a href="#">CSS tips and tricks for responsive design</a></li>
+          <li><a href="#">JavaScript debugging techniques</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <h1>asasfd</h1>
+  </footer>

@@ -1,0 +1,56 @@
+.profile-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .profile-tabs {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .profile-tab {
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .profile-tab.active {
+    background-color: #ccc;
+  }
+  
+  .profile-content > div {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .profile-content > div.active {
+    opacity: 1;
+  }
+  
+  .profile-books ul,
+  .profile-stories ul,
+  .profile-reviews ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .profile-books li,
+  .profile-stories li,
+  .profile-reviews li {
+    margin-bottom: 5px;
+  }
+  
+  .profile-books h2,
+  .profile-stories h2,
+  .profile-reviews h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
