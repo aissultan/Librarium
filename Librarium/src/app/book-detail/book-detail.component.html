@@ -1,0 +1,38 @@
+<div *ngIf="loaded">
+    <div id="detail">
+        <div>
+            <img src={{book.image}}>
+        </div>
+        <div>
+            <p>{{book.title}}</p>
+            <p>{{book.author}}</p>
+            <p>{{book.description}}</p>
+            <p>{{book.category.name}}</p>
+        </div>
+    </div>
+    <!-- <div id="buttons">
+        <button>Write review</button>
+        <button>Comment</button>
+    </div> -->
+    <div id="line"></div>
+    <button (click)="getComments(book)">Comments</button>
+    <div id="comments">
+        <div *ngFor="let comment of comments" id="comment">
+            <p>{{comment.user.name}}</p>
+            <p>{{comment.content}}</p>    
+        </div>
+    </div>
+    <!-- List of comments -->
+    
+    <div id="line"></div>
+    <button (click)="getReviews(book)">Reviews</button>
+    <div *ngIf="viewReviews" id="reviews">
+        <div *ngFor="let review of reviews" id="comment">
+            <p>{{review.user.name}}</p>
+            <p>{{review.rating}}</p>
+            <p>{{review.comment}}</p>    
+        </div>
+    </div>
+</div>
+
+<h2 *ngIf="!loaded">Book details are loading...</h2>
