@@ -13,7 +13,10 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { TopPanelComponent } from './top-panel/top-panel.component';
 import { BottomPanelComponent } from './bottom-panel/bottom-panel.component';
 import { SignInComponent } from './sign-in/sign-in.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { AuthInterceptor } from './AuthInterceptor';
+
 
 @NgModule({
   declarations: [
@@ -32,9 +35,16 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide :HTTP_INTERCEPTORS,
+      useClass : AuthInterceptor,
+      multi : true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

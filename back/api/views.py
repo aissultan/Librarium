@@ -6,12 +6,15 @@ from .models import Category, Book, Review, BookShelf, Comment
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 
 # Create your views here.
 
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
 def get_categories(request): 
     if request.method == 'GET':
         categories = Category.objects.all()
@@ -24,6 +27,7 @@ def get_categories(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (IsAuthenticated,)
     
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -47,6 +51,7 @@ def get_category(request, id):
     elif request.method == 'DELETE':
         category.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
+    permission_classes = (IsAuthenticated,)
 
 @csrf_exempt
 @api_view(['GET'])
@@ -100,6 +105,7 @@ class BookDetailAPIView(APIView):
 class ReviewListAPIView(ListAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+   
 
 class ReviewRetrieveAPIView(RetrieveAPIView):
     serializer_class = ReviewSerializer
