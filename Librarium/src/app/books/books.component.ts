@@ -18,7 +18,6 @@ export class BooksComponent implements OnInit {
   ngOnInit(): void {
     this.bookService.getBooks().subscribe((data: Book[]) => {
       this.books = data;
-      console.log(data)
     })
 
     this.bookService.getCategories().subscribe((data: Category[]) => {
@@ -27,15 +26,22 @@ export class BooksComponent implements OnInit {
   }
 
   getCategoryBooks(category: Category) {
-    this.bookService.getCategoryBooks(category.id).subscribe((data: Book[]) => {
-      this.categoryBooks = data;
-      this.currentCategory = category.name;
-    })
-  }
+    if(this.currentCategory == 'All') {
+      this.bookService.getCategoryBooks(category.id).subscribe((data: Book[]) => {
+        this.books = data;
+        this.currentCategory = category.name;
+      })
+    } else {
+      this.bookService.getBooks().subscribe((data: Book[]) => {
+        this.books = data;
+        this.currentCategory = 'All';
+      })
+    }
 
   // getBook(book_id: number) {
   //   this.bookService.getBook(book_id).subscribe((data: Book) => {
   //     this. 
   //   })
   // }
+  }
 }

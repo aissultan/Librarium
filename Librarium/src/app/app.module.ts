@@ -14,6 +14,7 @@ import { TopPanelComponent } from './top-panel/top-panel.component';
 import { BottomPanelComponent } from './bottom-panel/bottom-panel.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { HttpClientModule } from '@angular/common/http';
+import { BookDetailComponent } from './book-detail/book-detail.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { HttpClientModule } from '@angular/common/http';
     SignUpComponent,
     NotFoundComponent,
     TopPanelComponent,
-    BottomPanelComponent
+    BottomPanelComponent,
+    BookDetailComponent
   ],
   imports: [
     BrowserModule,

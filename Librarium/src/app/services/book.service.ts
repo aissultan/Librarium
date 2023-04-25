@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { Book, Category } from '../models';
+import { Book, Category, Review, Comment } from '../models';
 
 
 @Injectable({
@@ -21,12 +21,20 @@ export class BookService {
   }
 
   getCategoryBooks(category_id: number): Observable<Book[]> {
-    return this.client.get<Book[]>(`${this.BASE_URL}/categories/${category_id}/books/`)
+    return this.client.get<Book[]>(`${this.BASE_URL}/categories/${category_id}/books`)
   }
 
   getBook(book_id: number): Observable<Book> {
     return this.client.get<Book>(`${this.BASE_URL}/books/${book_id}`)
   }
 
+  getBooksReviews(id: number): Observable<Review[]> {
+    return this.client.get<Review[]>(`${this.BASE_URL}/books/${id}/reviews/`)
+  }
+
+  getBooksComments(id: number): Observable<Comment[]> {
+    console.log(id)
+    return this.client.get<Comment[]>(`${this.BASE_URL}/books/${id}/comments/`)
+  }
   
 }

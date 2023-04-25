@@ -6,11 +6,13 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { BookDetailComponent } from './book-detail/book-detail.component';
 
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
   { path: 'books', component: BooksComponent },
+  { path: 'books/:id', component: BookDetailComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'password', component: ForgotPasswordComponent },

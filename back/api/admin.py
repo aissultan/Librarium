@@ -22,3 +22,9 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'book', 'user', 'content', 'date')
     list_filter = ('book', 'user')
     search_fields = ('book__name', 'user__username')
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'book', 'user', 'rating', 'comment')
+    list_filter = ('book', 'user')
+    search_fields = ('book', 'user')

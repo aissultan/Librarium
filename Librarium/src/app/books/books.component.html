@@ -7,7 +7,7 @@
             <p id="text-category" class="cool-text">Categories</p>
         </div>
         <div *ngFor='let category of categories' id="categories-checkbox">
-            <label><input type="checkbox" onclick="getCategoryBooks(category)">{{category.name}}</label>
+            <label><input type="checkbox" (change)="getCategoryBooks(category)">{{category.name}}</label>
         </div>
     </div>
     <div id="books-part">
@@ -21,8 +21,9 @@
                     <p id="books-name" class="cool-text">{{book.title}}</p>
                     <p id="book-author">{{book.author}} </p>
                     <p id="book-description">{{book.description}}</p>
-                    <p id="book-category">Genre: {{book.category.name}} </p>
-                    <button id="read-button">Read</button>
+                    <p id="book-category">Genre: {{book.category.name}}</p>
+                    <p id="book-rating">Rating: {{book.rating}}</p>
+                    <a routerLink="/books/{{book.id}}"><button id="read-button">Read</button></a>
                 </div>
                 <div id="line"></div>
             </div>
