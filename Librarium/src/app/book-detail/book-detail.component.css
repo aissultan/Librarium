@@ -1,0 +1,97 @@
+/* Apply a font family and size to the entire page */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+}
+  
+  /* Style for the book detail container */
+#detail {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 100px;
+    margin-left: 200px;
+    margin-right: 100px;
+}
+  
+  /* Style for the book image */
+#detail img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+  
+  /* Style for the book title */
+#detail p:first-child {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+  
+  /* Style for the book author */
+#detail p:nth-child(2) {
+    font-size: 18px;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+  
+  /* Style for the book description */
+  #detail p:nth-child(3) {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  
+  /* Style for the book title (again) */
+  #detail p:last-child {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  #buttons {
+    margin-left: 1200px;
+  }
+  
+  /* Style for the buttons */
+  button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+    /* margin-left: 50px; */
+    border-radius: 5px;
+    margin-top: 35px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #3e8e41;
+  }
+  
+  /* Style for the line */
+  #line {
+    border-top: 1px solid black;
+    margin: 20px 0;
+  }
+  
+  /* Style for the reviews and comments containers */
+  #reviews, #comments {
+    margin-bottom: 20px;
+  }
+  
+  /* Style for the "Book details are loading..." message */
+  h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
+  }
+  

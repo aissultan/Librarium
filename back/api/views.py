@@ -57,6 +57,24 @@ def get_category_books(request, id):
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+@csrf_exempt
+@api_view(['GET'])
+def get_books_comments(request, id):
+    if request.method == 'GET':
+        book = Book.objects.get(id=id)
+        comments = Comment.objects.filter(book=book)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+@csrf_exempt
+@api_view(['GET'])
+def get_books_reviews(request, id):
+    if request.method == 'GET':
+        book = Book.objects.get(id=id)
+        reviews = Review.objects.filter(book=book)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 # Books views 
 class BooksAPIView(APIView):
     def get(self, request):
@@ -179,5 +197,20 @@ class CommentUpdateAPIView(UpdateAPIView):
 class CommentDeleteAPIView(DestroyAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    lookup_field = 'id'
+    lookup_field = 'id'    
 
+# class CommentList(APIView):
+#     """
+#     Выводит список всех комментариев к книге, либо создает новый комментарий.
+#     """
+#     def get(self, request, book_id):
+#         comments = Comment.objects.filter(book=book_id)
+#         serializer = CommentSerializer(comments, many=True)
+#         return Response(serializer.data)
+
+#     def post(self, request, book_id):
+#         serializer = CommentSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(user=request.user, book_id=book_id)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
