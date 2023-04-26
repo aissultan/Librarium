@@ -1,10 +1,31 @@
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col-2 {
+  flex-basis: 20%;
+
+}
+
+.col-8 {
+  flex-basis: 80%;
+}
+
+.profile-page{
+   width: auto;
+
+}
+
+
 .profile-container {
-    width: 88%;
+    width: 95%;
     margin: 0 auto;
-    padding: auto;
+    padding: 10px;
     border-radius: 5px;
     background-color: rgb(236, 235, 235);
   }
+
   
   .profile-tabs {
     display: flex;
@@ -22,8 +43,10 @@
   }
 
   .profile-content{
-    display: flex;
+  
     justify-content: space-around;
+    display: inline-block;
+    width: 75%;
   }
   
   .profile-tab.active {
