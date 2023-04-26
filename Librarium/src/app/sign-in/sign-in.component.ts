@@ -1,6 +1,6 @@
 import { Component ,OnInit} from '@angular/core';
-import { BookService } from '../services/book.service';
 import { AuthToken } from '../models';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,7 +11,7 @@ export class SignInComponent implements OnInit{
   logged : boolean = false;
   username : string = '';
   password : string = '';
-  constructor(private bookService : BookService){
+  constructor(private loginService : LoginService){
 
   }
   ngOnInit() {
@@ -21,9 +21,9 @@ export class SignInComponent implements OnInit{
     }
   }
   login(){
-    this.bookService.login(this.username,this.password).subscribe((data:AuthToken)=>{
+    this.loginService.login(this.username,this.password).subscribe((data:AuthToken)=>{
       localStorage.setItem('token',data.token);
-    this.logged = true;
+      this.logged = true;
       
     })
   }
