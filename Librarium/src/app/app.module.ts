@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-AssylBranch
 import { PersonalPageComponent } from './personal-page/personal-page.component';
-
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HomeComponent } from './home/home.component';
@@ -18,16 +16,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from './AuthInterceptor';
 import { BookDetailComponent } from './book-detail/book-detail.component';
-main
+
 
 @NgModule({
   declarations: [
     AppComponent,
-AssylBranch
     PersonalPageComponent,
-
     ForgotPasswordComponent,
- 
     RegistrationComponent,
     HomeComponent,
     BooksComponent,
@@ -37,7 +32,6 @@ AssylBranch
     TopPanelComponent,
     BottomPanelComponent,
     BookDetailComponent,
-main
   ],
   imports: [
     BrowserModule,
