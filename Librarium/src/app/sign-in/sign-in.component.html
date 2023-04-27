@@ -1,0 +1,27 @@
+<ng-container *ngIf="!logged">
+<body>
+    <div class="container">
+        <div class="zagolovok">
+            <img src="/assets/images/logotipe.png" alt="" id="logo" width="30px">
+            <h1>Librarium</h1>
+        </div>
+        <div class="form-box">
+            <div class="sign-in"><h1>Sign In</h1></div>
+            <form class="form" action="/users/sign_in" method="post">
+                <label for="inputEmailLogin"></label>
+                <input type="text" [(ngModel)]="username" placeholder="Email or Login" id="inputEmailLogin" name="email" >
+                <label for="inputPassword"></label>
+                <input type="password" [(ngModel)]="password" placeholder="Password" id="inputPassword" name="password" >
+                <div id="newPassword">
+                    <a routerLink="/password" >Password Trouble?</a>
+                </div>
+                <button type="submit" (click)="login()" id="submit">Sign in Librarium</button>
+                <div class="sign_up">Don't have an account?
+                    <a href="" class="raw-link">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</ng-container>
+<ng-container *ngIf="logged"><app-books></app-books></ng-container>
