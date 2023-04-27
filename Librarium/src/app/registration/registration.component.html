@@ -14,3 +14,32 @@
     </div>
     <button type="submit" (click)="registerUser()">Register</button>
   </form> -->
+  <ng-container *ngIf="!logged">
+    <body>
+        <div class="container">
+            <div class="zagolovok">
+                <img src="/assets/images/logotipe.png" alt="" id="logo" width="30px">
+                <h1>Librarium</h1>
+            </div>
+            <div class="form-box">
+                <div class="sign-in"><h1>Sign Up</h1></div>
+                <form class="form" action="/users/register" method="post">
+                  <label for=""></label>
+                  <input type="email" [(ngModel)]="email" placeholder="Email" name="email" required />
+                  <label for="inputEmailLogin"></label>
+                  <input type="text" [(ngModel)]="username" placeholder="Username" id="inputEmailLogin" name="username" required>
+                  <label for="inputPassword"></label>
+                  <input type="password" [(ngModel)]="password" placeholder="Password" id="inputPassword" name="password" required>
+                  <label></label>
+                  <input type="password" [(ngModel)]="confirmPassword" placeholder="Confirm Password" name="confirmPassword" required/>
+                  <button type="submit" (click)="register()" id="submit">Sign in Librarium</button>
+                  <div class="sign_up">Already have account?
+                      <a routerLink="/sign-in" class="raw-link">Sign In</a>
+                  </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    </ng-container>
+    <ng-container *ngIf="logged"><app-sign-in></app-sign-in></ng-container>
+    

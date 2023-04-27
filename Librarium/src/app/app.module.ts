@@ -29,7 +29,7 @@ import { BookDetailComponent } from './book-detail/book-detail.component';
     NotFoundComponent,
     TopPanelComponent,
     BottomPanelComponent,
-    BookDetailComponent
+    BookDetailComponent,
   ],
   imports: [
     BrowserModule,

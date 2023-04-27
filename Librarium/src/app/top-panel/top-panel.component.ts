@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SignInComponent } from '../sign-in/sign-in.component';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-top-panel',
@@ -7,10 +8,18 @@ import { SignInComponent } from '../sign-in/sign-in.component';
   styleUrls: ['./top-panel.component.css']
 })
 export class TopPanelComponent implements OnInit{
- logout(){
-  localStorage.removeItem("token");
- }
- ngOnInit(): void {
-
- }
+  logged : boolean | undefined;
+  logout(){
+    localStorage.removeItem("token");
+    this.logged = false;
+    this.updateStatus()
+    
+  }
+  constructor(private loginService : LoginService){}
+  ngOnInit(): void {
+    this.loginService.logged.subscribe(value=> this.logged = value)
+  }
+  updateStatus(){
+    this.loginService.setStatus(false);
+  }
 }

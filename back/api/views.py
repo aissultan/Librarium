@@ -1,3 +1,4 @@
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -8,9 +9,31 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+User = get_user_model()
 
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the email or username already exists in the database
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'error': 'Email already exists.'})
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists.'})
+
+        # Create the new user object
+        user = User.objects.create_user(username=username, email=email, password=password)
+
+        # Return a success message
+        return JsonResponse({'success': 'User registered successfully.'})
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -220,3 +243,8 @@ class CommentDeleteAPIView(DestroyAPIView):
 #             serializer.save(user=request.user, book_id=book_id)
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# @csrf_exempt
+# @api_view([ 'POST'])
+# def register_user(request):
+#     if request.method == 'POST':
+
