@@ -4,6 +4,7 @@ from rest_framework_jwt.views import  obtain_jwt_token
 
 urlpatterns = [
     path('login/',obtain_jwt_token),
+    path('register/',views.register),
     path('categories/', views.get_categories),
     path('categories/<int:id>', views.get_category),
     path('categories/<int:id>/books', views.get_category_books),
