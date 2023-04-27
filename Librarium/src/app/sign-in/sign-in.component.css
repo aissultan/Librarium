@@ -75,6 +75,7 @@ input{
     border-radius: 5px;
     border: 1px solid #b9bcbe;
     padding: 6px 12px;
+    /* background-color: rgb(118, 190, 216); */
 }
 #newPassword{
     width: 79%;

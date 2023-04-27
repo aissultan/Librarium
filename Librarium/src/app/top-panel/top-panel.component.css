@@ -3,6 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* background-color: rgb(105, 215, 105);
+    background-color : rgb(73, 145, 172) */
 }
 
 #logo-img {

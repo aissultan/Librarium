@@ -9,7 +9,7 @@
     </div>
     <div id="login-block">
         <a *ngIf="!this.logged" [routerLink]="['/sign-in']">Sign in</a>
-        <a *ngIf="!this.logged" [routerLink]="['/Registration']">Sign up</a>
+        <a *ngIf="!this.logged" [routerLink]="['/sign-up']">Sign up</a>
         <a *ngIf="this.logged" (click)="logout() " [routerLink]="['/home']">Log out</a>
     </div>
 </div>
