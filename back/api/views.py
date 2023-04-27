@@ -1,3 +1,4 @@
+import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -6,12 +7,37 @@ from .models import Category, Book, Review, BookShelf, Comment
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+User = get_user_model()
 
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+
+        # Check if the email or username already exists in the database
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({'error': 'Email already exists.'})
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'error': 'Username already exists.'})
+
+        # Create the new user object
+        user = User.objects.create_user(username=username, email=email, password=password)
+
+        # Return a success message
+        return JsonResponse({'success': 'User registered successfully.'})
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
 def get_categories(request): 
     if request.method == 'GET':
         categories = Category.objects.all()
@@ -24,6 +50,7 @@ def get_categories(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = (IsAuthenticated,)
     
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -47,6 +74,7 @@ def get_category(request, id):
     elif request.method == 'DELETE':
         category.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
+    permission_classes = (IsAuthenticated,)
 
 @csrf_exempt
 @api_view(['GET'])
@@ -118,6 +146,7 @@ class BookDetailAPIView(APIView):
 class ReviewListAPIView(ListAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+   
 
 class ReviewRetrieveAPIView(RetrieveAPIView):
     serializer_class = ReviewSerializer
@@ -229,3 +258,9 @@ def get_books_by_publisher(request, publisher):
     books = Book.objects.get_books_by_publisher(publisher)
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+# @csrf_exempt
+# @api_view([ 'POST'])
+# def register_user(request):
+#     if request.method == 'POST':
+

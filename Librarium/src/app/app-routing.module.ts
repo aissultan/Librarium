@@ -7,6 +7,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 const routes: Routes = [
 
@@ -14,7 +15,7 @@ const routes: Routes = [
   { path: 'books', component: BooksComponent },
   { path: 'books/:id', component: BookDetailComponent },
   { path: 'sign-in', component: SignInComponent },
-  { path: 'sign-up', component: SignUpComponent },
+  { path: 'sign-up', component: RegistrationComponent },
   { path: 'password', component: ForgotPasswordComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }

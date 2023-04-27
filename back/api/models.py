@@ -1,14 +1,31 @@
 import datetime
 from django.db import models
-from django.contrib.auth.models import User
-from django.utils import timezone
-
 from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from django.contrib.auth.models import User , AbstractUser,Group, Permission
+ 
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=30, unique=True)
+    password = models.CharField(max_length=128)
+    
+    groups = models.ManyToManyField(
+        Group,
+        verbose_name='groups',
+        blank=True,
+        related_name='api_user_groups'
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        verbose_name='user permissions',
+        blank=True,
+        related_name='api_user_permissions'
+    )
+    
+    USERNAME_FIELD = 'username'
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
 
     class Meta: 
         verbose_name = 'Category'

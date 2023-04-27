@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { AuthToken, } from '../models';
+import { Body } from '@angular/http/src/body';
 import { Book, Category, Review, Comment } from '../models';
 
 
@@ -9,6 +11,7 @@ import { Book, Category, Review, Comment } from '../models';
 })
 export class BookService {
   BASE_URL = 'http://127.0.0.1:8000/api';
+  logged :boolean = false;
 
   constructor(private client: HttpClient) {}
 
