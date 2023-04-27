@@ -8,18 +8,20 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { BookDetailComponent } from './book-detail/book-detail.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { PersonalPageComponent } from './personal-page/personal-page.component';
 
 const routes: Routes = [
 
   { path: 'home', component: HomeComponent },
+  { path: 'registration', component: RegistrationComponent },
   { path: 'books', component: BooksComponent },
   { path: 'books/:id', component: BookDetailComponent },
+  { path: 'personal-page', component: PersonalPageComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: RegistrationComponent },
   { path: 'password', component: ForgotPasswordComponent },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotFoundComponent }
-
 ];
 
 @NgModule({
