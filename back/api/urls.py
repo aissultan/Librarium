@@ -1,5 +1,6 @@
 from django.urls import path
 from api import views
+# from rest_framework.views import obtain_jwt_token
 
 urlpatterns = [
     path('categories/', views.get_categories),
@@ -11,4 +12,6 @@ urlpatterns = [
     path('comments/', views.CommentListAPIView.as_view()),
     path('books/<int:id>/comments/', views.get_books_comments),
     path('books/<int:id>/reviews/', views.get_books_reviews),
+    path('books-by-publisher/<str:publisher>/', views.get_books_by_publisher),
+    # path('login/', obtain_jwt_token)
 ]

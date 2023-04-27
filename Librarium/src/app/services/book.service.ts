@@ -36,5 +36,9 @@ export class BookService {
     console.log(id)
     return this.client.get<Comment[]>(`${this.BASE_URL}/books/${id}/comments/`)
   }
+
+  getBooksByPublisher(publisher: string): Observable<Book[]> {
+    return this.client.get<Book[]>(`${this.BASE_URL}/books-by-publisher/${publisher}/`)
+  }
   
 }

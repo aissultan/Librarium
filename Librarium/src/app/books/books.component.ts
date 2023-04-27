@@ -13,6 +13,9 @@ export class BooksComponent implements OnInit {
   categoryBooks: Book[] = [];
   currentCategory: string = 'All';
 
+  searchText: string = '';
+
+
   constructor(private bookService: BookService) {}
 
   ngOnInit(): void {

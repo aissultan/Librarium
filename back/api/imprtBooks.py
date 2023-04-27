@@ -2,7 +2,7 @@ import json
 from models import Book, Category
 
 with open('books.json') as f:
-    books_data = json.load(f)
+    books_data = json.loads(f)
 
 for book_data in books_data:
     # Получить объект категории из базы данных

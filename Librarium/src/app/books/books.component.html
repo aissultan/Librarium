@@ -11,11 +11,11 @@
         </div>
     </div>
     <div id="books-part">
-        <!-- <div id="sorting">
-            <button>For selecting books type</button>
-        </div> -->
+        <div id="books-search">
+            <input type="text" [(ngModel)]="searchText" placeholder="Search books...">
+        </div>
         <div id="books-list">
-            <div *ngFor="let book of books" id="book">
+            <div *ngFor="let book of books | filter: searchText" id="book">
                 <img id="book-img" src={{book.image}}> 
                 <div>
                     <p id="books-name" class="cool-text">{{book.title}}</p>

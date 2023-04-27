@@ -1,5 +1,11 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -18,6 +24,13 @@ class Category(models.Model):
         }
 
 
+class BookManager(models.Manager):
+    def get_books_by_author(self, author):
+        return self.filter(author=author)
+    
+    def get_books_by_publisher(self, publisher):
+        return self.filter(publisher=publisher)
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=50)
@@ -27,6 +40,8 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     rating = models.FloatField(default=0)
+    objects = BookManager()
+
 
     class Meta: 
         verbose_name = 'Book'
@@ -46,18 +61,20 @@ class Book(models.Model):
         }
 
 # "Review" - модель для отзывов, которые пользователи могут оставлять о книгах.
+
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
     comment = models.TextField()
+    # date = models.DateField(default=timezone.now, null=True)
 
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
          
     def __str__(self):
-        return f'Review #{self.id}, {self.book}, {self.user.username}, {self.rating}, {self.comment}'
+        return f'Review #{self.id}, {self.book}, {self.user.username}, {self.rating}, {self.comment}, {self.date}'
 
     def to_json(self):
         return {
@@ -66,6 +83,8 @@ class Review(models.Model):
             'user': self.user.username,
             'rating': self.rating,
             'comment': self.comment,
+            'date': self.date.isoformat(),
+
         }
 
 # "BookShelf" - модель для книжных полок, которые пользователи могут 
