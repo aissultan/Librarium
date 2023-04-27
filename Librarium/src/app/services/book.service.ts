@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { AuthToken, } from '../models';
-import { Body } from '@angular/http/src/body';
+
 import { Book, Category, Review, Comment } from '../models';
 
 
@@ -38,6 +38,10 @@ export class BookService {
   getBooksComments(id: number): Observable<Comment[]> {
     console.log(id)
     return this.client.get<Comment[]>(`${this.BASE_URL}/books/${id}/comments/`)
+  }
+
+  getBooksByPublisher(publisher: string): Observable<Book[]> {
+    return this.client.get<Book[]>(`${this.BASE_URL}/books-by-publisher/${publisher}/`)
   }
   
 }

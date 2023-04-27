@@ -12,11 +12,6 @@
 .cool-text {
   font-family: 'Playfair Display', serif;
 }
-  
-/* #categories-list {
-  margin-left: 17px;
-  font-size: 20px;
-} */
 
 #categories-list {
   position: sticky;
@@ -97,4 +92,20 @@
   font-size: 16px;
   cursor: pointer;
   border-radius: 4px; 
+}
+
+#books-search input[type="text"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#books-search input[type="text"]:focus {
+  outline: none;
+  border-color: #00cc3a;
+  box-shadow: 0 0 5px #078a21;
 }

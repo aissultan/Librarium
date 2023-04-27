@@ -1,38 +1,78 @@
-<div *ngIf="loaded">
-    <div id="detail">
-        <div>
+<div *ngIf="loaded" id="main-container">
+    <div id="const-part">
+        <div id="const">
             <img src={{book.image}}>
-        </div>
-        <div>
-            <p>{{book.title}}</p>
-            <p>{{book.author}}</p>
-            <p>{{book.description}}</p>
-            <p>{{book.category.name}}</p>
+            <button id="read">Read in GoodReads</button>
+            <button id="fav">Add to favorites</button>
+            <p id="share-book">Share with your network:</p>
+            <div id="medias">
+                <a href="https://api.whatsapp.com/send?text=Ссылка%20на%20книжку%20" target="_blank"><img class="media" id="whats" src="assets/images/Whatsapp.png"></a>
+                <a href="https://www.instagram.com/share?url=Ссылка%20на%20книжку" target="_blank"><img class="media" src="assets/images/instagram_1.png"></a>
+                <a href="https://telegram.me/share/url?url=Ссылка%20на%20книжку" target="_blank"><img class="media" src="assets/images/telegram.png"></a>
+            </div>
+
         </div>
     </div>
-    <!-- <div id="buttons">
-        <button>Write review</button>
-        <button>Comment</button>
-    </div> -->
+    <div id="characteristics">
+        <div id="char">
+            <p id="b-title">{{book.title}}</p>
+            <p id="b-author">{{book.author}}</p>
+            <p id="b-publisher">{{book.publisher}}, {{book.year}}</p>
+            <p id="b-description">{{book.description}}</p>
+            <p id="b-category">{{book.category.name}}</p>
+        </div>
+    </div>
+
     <div id="line"></div>
-    <button (click)="getComments(book)">Comments</button>
+
     <div id="comments">
+        <p class="cool-word">Comments</p>
         <div *ngFor="let comment of comments" id="comment">
             <p>{{comment.user.name}}</p>
-            <p>{{comment.content}}</p>    
+            <p id="comment-content">{{comment.content}}</p>    
+            <p id="comment-date">{{comment.date}}</p>
         </div>
+        <div *ngIf="!isComments">
+            <p>There are no comments yet. Be the first!</p>
+        </div>
+        <label>Leave a comment</label>
+        <input type="text" placeholder="Your opinion"><button>OK</button>
     </div>
-    <!-- List of comments -->
-    
+        
     <div id="line"></div>
-    <button (click)="getReviews(book)">Reviews</button>
-    <div *ngIf="viewReviews" id="reviews">
+
+    <div id="reviews">
+        <p class="cool-word">Reviews</p>
         <div *ngFor="let review of reviews" id="comment">
             <p>{{review.user.name}}</p>
-            <p>{{review.rating}}</p>
+            <p>{{review.rating}}/5</p>
             <p>{{review.comment}}</p>    
+        </div>
+        <div *ngIf="!isReviews">
+            <p>There are no reviews yet. Be the first!</p>
+        </div>
+        <label>Your rating for this book is from 1 to 5.</label>
+        <div class="rating">
+            <input type="radio" name="rating" value="1" [(ngModel)]="reviewRating">
+            <input type="radio" name="rating" value="2" [(ngModel)]="reviewRating">
+            <input type="radio" name="rating" value="3" [(ngModel)]="reviewRating">
+            <input type="radio" name="rating" value="4" [(ngModel)]="reviewRating">
+            <input type="radio" name="rating" value="5" [(ngModel)]="reviewRating">
+        </div>
+        <label>Your opinion about the book</label>
+        <input type="text" [(ngModel)]="reviewComment" placeholder="In my opinion...">
+        <button (click)="submitReview()">Submit</button>
+    </div>
+
+    <div id="line"></div>
+    <div id="extra-books" *ngIf="isExtraBooks">
+        <p id="extra-word">Also by this publisher</p>
+        <div *ngFor="let book of extraBooks" id="extra-c">
+            <img src="{{book.image}}" id="extra-image">
+                <p id="extra-title">{{book.title}} </p>
+                <p id="extra-author">{{book.author}} </p>
+                <p id="extra-year">{{book.year}} </p>
         </div>
     </div>
 </div>
-
 <h2 *ngIf="!loaded">Book details are loading...</h2>

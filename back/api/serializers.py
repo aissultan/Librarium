@@ -54,7 +54,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     book = BookSerializer()
-    user = UserSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Review
@@ -63,7 +63,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class BookShelfSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True)
-    user = UserSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = BookShelf
@@ -72,7 +72,7 @@ class BookShelfSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     book = BookSerializer()
-    user = UserSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Comment

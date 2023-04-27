@@ -243,6 +243,22 @@ class CommentDeleteAPIView(DestroyAPIView):
 #             serializer.save(user=request.user, book_id=book_id)
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def get_books_by_author(request, author):
+    books = Book.objects.get_books_by_author(author)
+    serializer = BookSerializer(books, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+@csrf_exempt
+@api_view(['GET'])
+def get_books_by_publisher(request, publisher):
+    books = Book.objects.get_books_by_publisher(publisher)
+    serializer = BookSerializer(books, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 # @csrf_exempt
 # @api_view([ 'POST'])
 # def register_user(request):
