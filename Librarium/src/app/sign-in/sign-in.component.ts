@@ -18,19 +18,15 @@ export class SignInComponent implements OnInit{
     this.loginService.logged.subscribe(value=> this.logged = value)
     const token = localStorage.getItem('token');
     if(token){
-    this.logged = true;
-    this.updateStatus();
+      this.loginService.setStatus(true); // Если токен есть, устанавливаем статус авторизации true
     }
   }
   login(){
     this.loginService.login(this.username,this.password).subscribe((data:AuthToken)=>{
       localStorage.setItem('token',data.token);
-      this.logged = true;
-      this.updateStatus();
+      this.loginService.setStatus(true);
     })
   }
-  updateStatus(){
-    this.loginService.setStatus(true)
-  }
-  
+
+
 }

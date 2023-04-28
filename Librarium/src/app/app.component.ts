@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { LoginService } from './services/login.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Librarium';
-
+  constructor(private loginService: LoginService) {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.loginService.setStatus(true);
+    }
+  }
 }

@@ -22,23 +22,23 @@
             <p id="b-category">{{book.category.name}}</p>
         </div>
     </div>
-
     <div id="line"></div>
-
     <div id="comments">
         <p class="cool-word">Comments</p>
-        <div *ngFor="let comment of comments" id="comment">
-            <p>{{comment.user.name}}</p>
-            <p id="comment-content">{{comment.content}}</p>    
-            <p id="comment-date">{{comment.date}}</p>
-        </div>
+            <div *ngFor="let comment of comments" id="comment">
+                <p>{{comment.user.name}}</p>
+
+                <p  id="comment-content">{{comment.content}}</p>
+                <p  id="comment-date">{{comment.date}}</p>
+            </div>
+
         <div *ngIf="!isComments">
             <p>There are no comments yet. Be the first!</p>
         </div>
         <label>Leave a comment</label>
         <input type="text" placeholder="Your opinion"><button>OK</button>
     </div>
-        
+
     <div id="line"></div>
 
     <div id="reviews">
@@ -46,7 +46,7 @@
         <div *ngFor="let review of reviews" id="comment">
             <p>{{review.user.name}}</p>
             <p>{{review.rating}}/5</p>
-            <p>{{review.comment}}</p>    
+            <p>{{review.comment}}</p>
         </div>
         <div *ngIf="!isReviews">
             <p>There are no reviews yet. Be the first!</p>
