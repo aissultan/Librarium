@@ -3,6 +3,7 @@ from api import views
 from rest_framework_jwt.views import  obtain_jwt_token
 
 urlpatterns = [
+    path('user/',views.get_user),
     path('login/',obtain_jwt_token),
     path('register/',views.register),
     path('categories/', views.get_categories),

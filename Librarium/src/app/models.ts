@@ -24,6 +24,12 @@ export interface AuthToken{
     token : string;
 }
 
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    password: string;
+}
 
 
 export interface Review {
