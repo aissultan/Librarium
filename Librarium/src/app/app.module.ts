@@ -27,7 +27,7 @@ import { ReviewComponent } from './review/review.component';
     ForgotPasswordComponent,
     RegistrationComponent,
     HomeComponent,
-    BooksComponent, 
+    BooksComponent,
     SignInComponent,
     SignUpComponent,
     NotFoundComponent,
@@ -44,6 +44,7 @@ import { ReviewComponent } from './review/review.component';
     Ng2SearchPipeModule // импортируйте Ng2SearchPipeModule
   ],
   providers: [
+    AppComponent,
     {
       provide :HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
