@@ -207,7 +207,7 @@ class Comment(models.Model):
     def to_json(self):
         return {
             'id': self.id,
-            'book': self.book.title,
+            'book': self.book.id,
             'user': self.user.username,
             'content': self.content,
             'date': self.date.isoformat(),

@@ -74,3 +74,15 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ['id', 'book', 'username', 'content', 'date']
 
+    def create(self, validated_data):
+        # Get the current user from the request context
+        user = self.context['request'].user
+
+        # Create a new comment with the validated data and the current user
+        comment = Comment.objects.create(
+            user=user,
+            book=validated_data['book'],
+            content=validated_data['content']
+        )
+
+        return comment

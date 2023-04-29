@@ -18,6 +18,7 @@ export class PersonalPageComponent {
     this.user = {} as User;
   }
   ngOnInit() {
+    
     this.loginService.getUser().subscribe(user => {
       this.user = user;
       this.username = user.username;

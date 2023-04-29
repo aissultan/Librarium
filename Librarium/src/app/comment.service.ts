@@ -16,7 +16,7 @@ export class CommentService {
 
   writeComment(book: Book, comment: string): Observable<Comment> {
     const now = new Date();
-    return this.client.post<Comment>(`${this.BASE_URL}/comments-create/`, 
+    return this.client.post<Comment>(`${this.BASE_URL}/comments-create/`,
     {
       book: book,
       content: comment,
