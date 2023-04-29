@@ -248,6 +248,8 @@ class CommentDeleteAPIView(DestroyAPIView):
     queryset = Comment.objects.all()
     lookup_field = 'id'    
 
+
+
 # @csrf_exempt
 # @api_view(['POST'])
 # def add_comment(request, book_id):

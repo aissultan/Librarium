@@ -73,7 +73,7 @@ export class BookDetailComponent implements OnInit {
     })
   }
 
-  submitCommet() {
+  submitComment() {
     this.commentService.writeComment(this.book, this.comment).subscribe((data: Comment) => {
       this.comments.push(data);
       this.comment = '';
