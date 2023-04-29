@@ -1,31 +1,10 @@
-import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User , AbstractUser,Group, Permission
- 
-# class User(AbstractUser):
-#     email = models.EmailField(unique=True)
-#     username = models.CharField(max_length=30, unique=True)
-#     password = models.CharField(max_length=128)
-    
-#     groups = models.ManyToManyField(
-#         Group,
-#         verbose_name='groups',
-#         blank=True,
-#         related_name='api_user_groups'
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         verbose_name='user permissions',
-#         blank=True,
-#         related_name='api_user_permissions'
-#     )
-    
-#     USERNAME_FIELD = 'username'
+from django.contrib.auth.models import Group, Permission
 import datetime 
 from django.db import models 
 from django.contrib.auth import get_user_model 
-from django.contrib.auth.models import User, AbstractUser, Group, Permission 
+from django.contrib.auth.models import Group, Permission 
 from django.contrib.auth.base_user import BaseUserManager 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin 
  
@@ -65,6 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         related_name='api_user_groups'
     )
+    
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',

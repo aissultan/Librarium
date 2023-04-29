@@ -24,18 +24,18 @@ export class CommentService {
     })
   }
 
-  getComments() {
-    return this.client.get<Comment[]>(`http://127.0.0.1:8000/api/comments/`).pipe(
-      map(comments => {
-        // Добавляем поле username к каждому комментарию
-        return comments.map(comment => {
-          const username = comment.user;
-          return {
-            ...comment,
-            username
-          };
-        });
-      })
-    );
-  }
+  // getComments() {
+  //   return this.client.get<Comment[]>(`http://127.0.0.1:8000/api/comments/`).pipe(
+  //     map(comments => {
+  //       // Добавляем поле username к каждому комментарию
+  //       return comments.map(comment => {
+  //         const username = comment.user;
+  //         return {
+  //           ...comment,
+  //           username
+  //         };
+  //       });
+  //     })
+  //   );
+  // }
 }

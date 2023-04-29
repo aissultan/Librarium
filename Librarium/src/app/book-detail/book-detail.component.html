@@ -26,7 +26,7 @@
     <div id="comments"> 
         <p class="cool-word">Comments</p>
         <div *ngFor="let comment of comments" id="comment">
-            <p>{{comment.user}}</p>
+            <p>{{comment.username}}</p>
             <p id="comment-content">{{comment.content}}</p>    
             <p id="comment-date">{{comment.date}}</p>
         </div>
@@ -42,7 +42,7 @@
     <div id="reviews">
         <p class="cool-word">Reviews</p>
         <div *ngFor="let review of reviews" id="comment">
-            <!-- <p>{{review.user.username}}</p> -->
+            <p>{{review.username}}</p>
             <p>{{review.rating}}/5</p>
             <p>{{review.comment}}</p>
         </div>

@@ -53,13 +53,11 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    username = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Review
-        fields = ['id', 'book', 'user', 'rating', 'comment']
-
+        fields = ['id', 'book', 'username', 'rating', 'comment']
 
 class BookShelfSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True)

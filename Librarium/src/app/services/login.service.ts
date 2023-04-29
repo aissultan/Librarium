@@ -25,12 +25,9 @@ export class LoginService {
     )
   }
 
-  getUser() { 
-    return this.client.get(this.BASE_URL + '/user/').subscribe((res: any) => {
-      localStorage.setItem('username', res.username)
-    }, error => {
-
-    })
+  getUser(): Observable<User> {
+    const token = localStorage.getItem('token');
+    return this.client.get<User>(`${this.BASE_URL}/user/`);
   }
 
 }

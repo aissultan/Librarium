@@ -9,7 +9,7 @@ import { LoginService } from '../services/login.service';
   styleUrls: ['./personal-page.component.css']
 })
 
-export class PersonalPageComponent implements OnInit{
+export class PersonalPageComponent {
   user: User;
   username: string | undefined;
   email: string | undefined;
