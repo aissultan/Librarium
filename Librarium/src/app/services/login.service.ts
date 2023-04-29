@@ -24,10 +24,8 @@ export class LoginService {
       {username,password}
     )
   }
-
   getUser(): Observable<User> {
     const token = localStorage.getItem('token');
     return this.client.get<User>(`${this.BASE_URL}/user/`);
   }
-
 }
