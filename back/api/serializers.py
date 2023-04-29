@@ -69,7 +69,6 @@ class BookShelfSerializer(serializers.ModelSerializer):
         model = BookShelf
         fields = ['id', 'name', 'user', 'books']
 
-
 class CommentSerializer(serializers.ModelSerializer):
     book = BookSerializer()
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())

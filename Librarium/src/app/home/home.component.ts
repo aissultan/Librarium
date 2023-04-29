@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { LoginService } from '../services/login.service';
 
 
 @Component({
@@ -7,6 +8,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  constructor(private logService:LoginService){
+
+  }
+  ngOnInit(): void {
+    this.logService.getUser()
+    console.log(this.logService.getUser())
+  }
 
 }

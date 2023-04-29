@@ -2,3 +2,8 @@
 body {
     margin: 0;
 }
+
+@font-face {
+    font-family: "Ginger Bold";
+    src: url("/assets/fonts/F37 Ginger Bold.otf");
+}

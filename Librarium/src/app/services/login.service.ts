@@ -23,4 +23,12 @@ export class LoginService {
       {username,password}
     )
   }
+  getUser() { 
+    return this.client.get(this.BASE_URL + '/user/').subscribe((res: any) => {
+      localStorage.setItem('username', res.username)
+    }, error => {
+
+    })
+  }
+
 }

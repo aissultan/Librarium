@@ -71,6 +71,13 @@ export class BookDetailComponent implements OnInit {
     })
   }
 
+  submitCommet() {
+    this.commentService.writeComment(this.book, this.comment).subscribe((data: Comment) => {
+      this.comments.push(data);
+      this.comment = '';
+    })
+  }
+
   // rate(star: string) {
   //   const index = this.stars.indexOf(star);
   //   for(let i=0; i<5; i++) {

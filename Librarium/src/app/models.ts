@@ -14,15 +14,9 @@ export interface Category {
     id: number; 
     name: string;
 }
+
 export interface AuthToken{
     token : string;
-}
-
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
 }
 
 export interface Review {
@@ -39,6 +33,15 @@ export interface BookShelf {
     user: User;
     books: Book[];
 }
+
+export interface User {
+    id: number;
+    email: string;
+    username: string;
+    password: string;
+    is_staff: boolean;
+    is_superuser: boolean;
+}  
 
 export interface Comment {
     id: number;
