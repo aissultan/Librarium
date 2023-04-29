@@ -9,9 +9,10 @@ import { Book, Category, Review, Comment } from '../models';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BookService {
   BASE_URL = 'http://127.0.0.1:8000/api';
-  logged :boolean = false;
+  logged: boolean = false;
 
   constructor(private client: HttpClient) {}
 

@@ -14,6 +14,7 @@ export class BooksComponent implements OnInit {
   categories: Category[] = [];
   categoryBooks: Book[] = [];
   currentCategory: string = 'All';
+  currentSorting: string = 'None';
 
   searchText: string = '';
 
@@ -42,11 +43,13 @@ export class BooksComponent implements OnInit {
         this.currentCategory = 'All';
       })
     }
+  }
 
-  // getBook(book_id: number) {
-  //   this.bookService.getBook(book_id).subscribe((data: Book) => {
-  //     this. 
-  //   })
-  // }
+  sortByYear() {
+    this.books.sort(  );
+  }
+
+  sortByRating() {
+
   }
 }

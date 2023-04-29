@@ -27,4 +27,6 @@ export class PersonalPageComponent {
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
+
+  
 }

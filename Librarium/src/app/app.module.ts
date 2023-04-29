@@ -18,6 +18,7 @@ import { BooksComponent } from './books/books.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { FormsModule } from '@angular/forms';
 import { ReviewComponent } from './review/review.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ReviewComponent } from './review/review.component';
     TopPanelComponent,
     BottomPanelComponent,
     BookDetailComponent,
-    ReviewComponent
+    ReviewComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

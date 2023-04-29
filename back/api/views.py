@@ -3,8 +3,7 @@ from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.serializers import UserSerializer
-from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer, BookShelfSerializer, CommentSerializer
+from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer, BookShelfSerializer, CommentSerializer, UserSerializer
 from .models import Category, Book, Review, BookShelf, Comment
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
@@ -55,6 +54,7 @@ def register(request):
 
         # Return a success message
         return JsonResponse({'success': 'User registered successfully.'})
+    
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -71,7 +71,6 @@ def get_categories(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    permission_classes = (IsAuthenticated,)
     
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -95,7 +94,6 @@ def get_category(request, id):
     elif request.method == 'DELETE':
         category.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
-    permission_classes = (IsAuthenticated,)
 
 @csrf_exempt
 @api_view(['GET'])
@@ -226,6 +224,7 @@ class CommentListAPIView(ListAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
+
 # Retrieve a specific comment by ID
 class CommentRetrieveAPIView(RetrieveAPIView):
     serializer_class = CommentSerializer
@@ -249,6 +248,62 @@ class CommentDeleteAPIView(DestroyAPIView):
     queryset = Comment.objects.all()
     lookup_field = 'id'    
 
+# @csrf_exempt
+# @api_view(['POST'])
+# def add_comment(request, book_id):
+#     book = get_object_or_404(Book, id=book_id)
+#     content = request.POST.get('content')
+#     comment = Comment.objects.create(book=book, user=request.user, content=content)
+#     return Response(comment.to_json())
+
+# @csrf_exempt
+# @api_view(['DELETE'])
+# def delete_comment(request, comment_id):
+#     comment = get_object_or_404(Comment, id=comment_id)
+#     if comment.user == request.user:
+#         comment.delete()
+#         return JsonResponse({'success': True})
+#     else:
+#         return JsonResponse({'success': False})
+
+# class CommentCreateAPIView(genericpath.CreateAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+
+#     def perform_create(self, serializer):
+#         book_id = self.kwargs.get('book_id')
+#         book = get_object_or_404(Book, id=book_id)
+#         serializer.save(book=book, user=self.request.user)
+
+# class CommentUpdateAPIView(generic.UpdateAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+
+#     def get_object(self):
+#         comment_id = self.kwargs.get('comment_id')
+#         obj = get_object_or_404(Comment, id=comment_id)
+#         if obj.user != self.request.user:
+#             raise ValidationError("You don't have permission to edit this comment.")
+#         return obj
+
+# class CommentDeleteAPIView(GenericAlias.DestroyAPIView):
+#     queryset = Comment.objects.all()
+#     serializer_class = CommentSerializer
+
+#     def get_object(self):
+#         comment_id = self.kwargs.get('comment_id')
+#         obj = get_object_or_404(Comment, id=comment_id)
+#         if obj.user != self.request.user:
+#             raise ValidationError("You don't have permission to delete this comment.")
+#         return obj
+
+# @csrf_exempt
+# @api_view(['GET'])
+# def get_comments(request, book_id):
+#     comments = Comment.objects.filter(book_id=book_id)
+#     comments_json = [comment.to_json() for comment in comments]
+#     return JsonResponse(comments_json, safe=False)
+
 # class CommentList(APIView):
 #     """
 #     Выводит список всех комментариев к книге, либо создает новый комментарий.
@@ -264,6 +319,15 @@ class CommentDeleteAPIView(DestroyAPIView):
 #             serializer.save(user=request.user, book_id=book_id)
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import api_view, permission_classes
+@csrf_exempt 
+@api_view(['GET']) 
+@permission_classes([AllowAny])
+def get_user(request): 
+    user = request.user 
+    serializer = UserSerializer(user) 
+    return Response(serializer.data)
 
 
 @csrf_exempt
@@ -280,6 +344,14 @@ def get_books_by_publisher(request, publisher):
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+class UserView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        token = request.META['HTTP_AUTHORIZATION'].split()
+        user = Token.objects.get(key=token[1]).user
+        user_serializer = UserSerializer(user)
+        return Response(user_serializer.data)
 # @csrf_exempt
 # @api_view([ 'POST'])
 # def register_user(request):

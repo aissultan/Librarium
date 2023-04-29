@@ -31,8 +31,9 @@ export class RegistrationComponent {
       window.alert('Passwords do not match.');
     } else {
       this.registerUser(this.email, this.username, this.password);
-    }
+    } 
   }
+  
   registerUser(email : string, username : string,password :string) {
     this.http.post('http://127.0.0.1:8000/api/register/',{email,username,password}).subscribe(
         (response) => {

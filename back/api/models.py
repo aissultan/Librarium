@@ -1,31 +1,10 @@
-import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User , AbstractUser,Group, Permission
- 
-# class User(AbstractUser):
-#     email = models.EmailField(unique=True)
-#     username = models.CharField(max_length=30, unique=True)
-#     password = models.CharField(max_length=128)
-    
-#     groups = models.ManyToManyField(
-#         Group,
-#         verbose_name='groups',
-#         blank=True,
-#         related_name='api_user_groups'
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         verbose_name='user permissions',
-#         blank=True,
-#         related_name='api_user_permissions'
-#     )
-    
-#     USERNAME_FIELD = 'username'
+from django.contrib.auth.models import Group, Permission
 import datetime 
 from django.db import models 
 from django.contrib.auth import get_user_model 
-from django.contrib.auth.models import User, AbstractUser, Group, Permission 
+from django.contrib.auth.models import Group, Permission 
 from django.contrib.auth.base_user import BaseUserManager 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin 
  
@@ -65,6 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         related_name='api_user_groups'
     )
+    
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',
@@ -84,6 +64,27 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+# class User(AbstractUser):
+#     email = models.EmailField(unique=True)
+#     username = models.CharField(max_length=30, unique=True)
+#     password = models.CharField(max_length=128)
+    
+#     groups = models.ManyToManyField(
+#         Group,
+#         verbose_name='groups',
+#         blank=True,
+#         related_name='api_user_groups'
+#     )
+#     user_permissions = models.ManyToManyField(
+#         Permission,
+#         verbose_name='user permissions',
+#         blank=True,
+#         related_name='api_user_permissions'
+#     )
+    
+#     USERNAME_FIELD = 'username'
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -143,7 +144,8 @@ class Book(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)    
+    
     rating = models.IntegerField()
     comment = models.TextField()
     # date = models.DateField(default=timezone.now, null=True)
@@ -153,7 +155,7 @@ class Review(models.Model):
         verbose_name_plural = 'Reviews'
 
     def __str__(self):
-        return f'Review #{self.id}, {self.book}, {self.user.username}, {self.rating}, {self.comment}, {self.date}'
+        return f'Review #{self.id}, {self.book}, {self.user.username}, {self.rating}, {self.comment}'
 
     def to_json(self):
         return {
@@ -161,9 +163,7 @@ class Review(models.Model):
             'book': self.book.title,
             'user': self.user.username,
             'rating': self.rating,
-            'comment': self.comment,
-            'date': self.date.isoformat(),
-
+            'comment': self.comment
         }
 
 # "BookShelf" - модель для книжных полок, которые пользователи могут

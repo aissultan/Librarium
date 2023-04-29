@@ -4,7 +4,7 @@ from models import Book, Category
 with open('books.json') as f:
     books_data = json.loads(f)
 
-for book_data in books_data:
+for book_data in books_data[:5]:
     # Получить объект категории из базы данных
     category_name = book_data['Category']
     category = Category.objects.get(name=category_name)
