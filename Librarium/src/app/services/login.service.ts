@@ -24,12 +24,8 @@ export class LoginService {
       {username,password}
     )
   }
-<<<<<<< Updated upstream
-  
-=======
   getUser(): Observable<User> {
     const token = localStorage.getItem('token');
     return this.client.get<User>(`${this.BASE_URL}/user/`);
   }
->>>>>>> Stashed changes
 }
