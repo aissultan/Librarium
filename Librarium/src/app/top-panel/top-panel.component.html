@@ -7,6 +7,7 @@
         <a *ngIf="this.logged" [routerLink]="['/books']">Books</a>
         <a [routerLink]="['/about']">About</a>
         <a [routerLink]="['/personal-page']">Profile</a>
+        <a *ngIf="this.logged" [routerLink]="['/personal-page']">Profile</a>
     </div>
     <div id="login-block">
         <a *ngIf="!this.logged" [routerLink]="['/sign-in']">Sign in</a>

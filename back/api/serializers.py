@@ -49,7 +49,7 @@ class BookSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id','username','email']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -70,10 +70,9 @@ class BookShelfSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'user', 'books']
 
 class CommentSerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    username = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Comment
-        fields = ['id', 'book', 'user', 'content', 'date']
+        fields = ['id', 'book', 'username', 'content', 'date']
 

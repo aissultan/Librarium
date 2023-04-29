@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Book, Comment } from './models';
+import {map, Observable} from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { Book, Comment } from './models';
 
 export class CommentService {
 
-  BASE_URL = 'http://127.0.0.1:8000/api';
+  BASE_URL = 'http://127.0.0.1:8000/';
 
   constructor(private client: HttpClient) {}
 
@@ -23,4 +24,18 @@ export class CommentService {
     })
   }
 
+  getComments() {
+    return this.client.get<Comment[]>(`http://127.0.0.1:8000/api/comments/`).pipe(
+      map(comments => {
+        // Добавляем поле username к каждому комментарию
+        return comments.map(comment => {
+          const username = comment.user;
+          return {
+            ...comment,
+            username
+          };
+        });
+      })
+    );
+  }
 }

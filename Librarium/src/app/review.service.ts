@@ -20,9 +20,9 @@ export class ReviewService {
   // }
 
   createReview(reviewComment: string, reviewRating: number): Observable<Review> {
-    return this.client.post<Review>(`${this.BASE_URL}/reviews/`, 
+    return this.client.post<Review>(`${this.BASE_URL}/reviews/`,
     {
-      
+
     })
   }
 }

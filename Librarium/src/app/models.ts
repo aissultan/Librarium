@@ -1,7 +1,8 @@
+
 export interface Book {
     id: number;
     title: string;
-    author: string; 
+    author: string;
     year: number;
     publisher: string;
     image: string;
@@ -11,13 +12,21 @@ export interface Book {
 }
 
 export interface Category {
-    id: number; 
+    id: number;
     name: string;
 }
 
 export interface AuthToken{
     token : string;
 }
+
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    password: string;
+}
+
 
 export interface Review {
     id: number;
@@ -45,8 +54,8 @@ export interface User {
 
 export interface Comment {
     id: number;
-    book: Book;
     user: User;
+    book: Book;
     content: string;
     date: Date;
 }

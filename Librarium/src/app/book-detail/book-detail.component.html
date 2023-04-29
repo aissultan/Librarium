@@ -21,7 +21,6 @@
             <p id="b-category">{{book.category.name}}</p>
         </div>
     </div>
-
     <div id="line"></div>
 
     <div id="comments"> 
@@ -37,7 +36,7 @@
         <label>Leave a comment</label>
         <input type="text" placeholder="Your opinion" [(ngModel)]="comment"><button (click)="submitCommet()">OK</button>
     </div>
-        
+
     <div id="line"></div>
 
     <div id="reviews">
@@ -45,7 +44,7 @@
         <div *ngFor="let review of reviews" id="comment">
             <!-- <p>{{review.user.username}}</p> -->
             <p>{{review.rating}}/5</p>
-            <p>{{review.comment}}</p>    
+            <p>{{review.comment}}</p>
         </div>
         <div *ngIf="!isReviews">
             <p>There are no reviews yet. Be the first!</p>

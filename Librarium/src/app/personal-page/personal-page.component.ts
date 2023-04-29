@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../models';
+import { HttpClient } from '@angular/common/http';
 import { LoginService } from '../services/login.service';
-
 
 @Component({
   selector: 'app-personal-page',
@@ -9,21 +10,23 @@ import { LoginService } from '../services/login.service';
 })
 
 export class PersonalPageComponent implements OnInit{
-  name:any;
-  location = 'New York, NY';
-  email = 'johnsmith@example.com';
+  user: User;
+  username: string | undefined;
+  email: string | undefined;
   activeTab = 'books';
-  constructor(private loginservice:LoginService){
-
+  constructor(private client: HttpClient, private loginService: LoginService) {
+    this.user = {} as User;
+  }
+  ngOnInit() {
+    this.loginService.getUser().subscribe(user => {
+      this.user = user;
+      this.username = user.username;
+      this.email = user.email;
+    });
   }
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
-  ngOnInit(): void {
-  this.loginservice.getUser()
-  // if(localStorage.getItem('username')){
-  console.log(localStorage.getItem('username'))
-  
-}
+
   
 }

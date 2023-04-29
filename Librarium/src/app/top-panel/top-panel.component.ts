@@ -18,6 +18,10 @@ export class TopPanelComponent implements OnInit{
   constructor(private loginService : LoginService){}
   ngOnInit(): void {
     this.loginService.logged.subscribe(value=> this.logged = value)
+    const token = localStorage.getItem('token');
+    if(token){
+    this.logged = true;
+    }
   }
   updateStatus(){
     this.loginService.setStatus(false);

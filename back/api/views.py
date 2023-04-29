@@ -1,4 +1,5 @@
 import json
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -7,13 +8,33 @@ from .models import Category, Book, Review, BookShelf, Comment
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User,auth
+from rest_framework.permissions import IsAuthenticated
+# def registration(request):
+#     if request.method == 'POST':
+#         first_name = request.POST['first_name']
+#         last_name = request.POST['last_name']
+#         username = request.POST['username']
+#         email = request.POST['email']
+#         password = request.POST['password']
+#         confirm_password = request.POST['confirm_password']
+#         if password == confirm_password:
+#             if User.objects.filter(username=username).exists():
+#                 messages.info(request,'email is exist')
+#                 return redirect(register)
 
 User = get_user_model()
-
+@csrf_exempt
+@api_view(['GET'])
+def get_user(request):
+    if request.method == 'GET':        
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 @csrf_exempt
 def register(request):
     if request.method == 'POST':

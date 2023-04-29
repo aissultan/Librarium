@@ -28,7 +28,7 @@ import { AboutComponent } from './about/about.component';
     ForgotPasswordComponent,
     RegistrationComponent,
     HomeComponent,
-    BooksComponent, 
+    BooksComponent,
     SignInComponent,
     SignUpComponent,
     NotFoundComponent,
@@ -46,6 +46,7 @@ import { AboutComponent } from './about/about.component';
     Ng2SearchPipeModule // импортируйте Ng2SearchPipeModule
   ],
   providers: [
+    AppComponent,
     {
       provide :HTTP_INTERCEPTORS,
       useClass : AuthInterceptor,
