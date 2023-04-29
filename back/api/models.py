@@ -1,10 +1,34 @@
 import datetime
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User, AbstractUser, Group, Permission
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-
+from django.contrib.auth.models import User , AbstractUser,Group, Permission
+ 
+# class User(AbstractUser):
+#     email = models.EmailField(unique=True)
+#     username = models.CharField(max_length=30, unique=True)
+#     password = models.CharField(max_length=128)
+    
+#     groups = models.ManyToManyField(
+#         Group,
+#         verbose_name='groups',
+#         blank=True,
+#         related_name='api_user_groups'
+#     )
+#     user_permissions = models.ManyToManyField(
+#         Permission,
+#         verbose_name='user permissions',
+#         blank=True,
+#         related_name='api_user_permissions'
+#     )
+    
+#     USERNAME_FIELD = 'username'
+import datetime 
+from django.db import models 
+from django.contrib.auth import get_user_model 
+from django.contrib.auth.models import User, AbstractUser, Group, Permission 
+from django.contrib.auth.base_user import BaseUserManager 
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin 
+ 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         """
@@ -17,6 +41,8 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(username=username, email=email, **extra_fields)
         user.set_password(password)
+        user.is_staff = False
+        user.is_superuser = False
         user.save(using=self._db)
         return user
 
@@ -27,7 +53,6 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, email, password, **extra_fields)
-
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
@@ -60,29 +85,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
-# class User(AbstractUser):
-#     email = models.EmailField(unique=True)
-#     username = models.CharField(max_length=30, unique=True)
-#     password = models.CharField(max_length=128)
-
-#     groups = models.ManyToManyField(
-#         Group,
-#         verbose_name='groups',
-#         blank=True,
-#         related_name='api_user_groups'
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         verbose_name='user permissions',
-#         blank=True,
-#         related_name='api_user_permissions'
-#     )
-
-#     USERNAME_FIELD = 'username'
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True,blank=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,null=True)
 
     class Meta:
         verbose_name = 'Category'

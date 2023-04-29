@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { AuthToken } from '../models';
+import { AuthToken, User } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +20,16 @@ export class LoginService {
 
   login(username : string, password : string): Observable<AuthToken>{
     return this.client.post<AuthToken>(
-       `${this.BASE_URL}/login/`,
+      `${this.BASE_URL}/login/`,
       {username,password}
     )
   }
+<<<<<<< Updated upstream
   
+=======
+  getUser(): Observable<User> {
+    const token = localStorage.getItem('token');
+    return this.client.get<User>(`${this.BASE_URL}/user/`);
+  }
+>>>>>>> Stashed changes
 }

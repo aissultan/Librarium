@@ -25,6 +25,10 @@
                 <div class="sign-in"><h1>Sign Up</h1></div>
                 <form class="form" action="/users/register" method="post">
                   <label for="" required></label>
+                  <input type="text" [(ngModel)]="first_name" placeholder="first name" name="first_name" required />
+                  <label for="" required></label>
+                  <input type="text" [(ngModel)]="last_name" placeholder="last name" name="last_name" required />
+                  <label for="" required></label>
                   <input type="email" [(ngModel)]="email" placeholder="Email" name="email" required />
                   <label for="inputEmailLogin"></label>
                   <input type="text" [(ngModel)]="username" placeholder="Username" id="inputEmailLogin" name="username" required >
