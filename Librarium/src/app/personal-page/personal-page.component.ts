@@ -20,6 +20,7 @@ export class PersonalPageComponent {
   }
 
   ngOnInit() {
+    
     this.loginService.getUser().subscribe(user => {
       this.user = user;
       this.username = user.username;
