@@ -26,6 +26,8 @@ class Migration(migrations.Migration):
                 ('image', models.URLField()),
                 ('description', models.TextField()),
                 ('rating', models.FloatField(default=0)),
+                ('likes', models.IntegerField(null=True)),
+                ('link', models.CharField(max_length=200, null=True)),
             ],
             options={
                 'verbose_name': 'Book',

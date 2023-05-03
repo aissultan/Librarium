@@ -19,7 +19,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { FormsModule } from '@angular/forms';
 import { ReviewComponent } from './review/review.component';
 import { AboutComponent } from './about/about.component';
-
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -36,14 +36,15 @@ import { AboutComponent } from './about/about.component';
     BottomPanelComponent,
     BookDetailComponent,
     ReviewComponent,
-    AboutComponent
-  ],
+    AboutComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    Ng2SearchPipeModule // импортируйте Ng2SearchPipeModule
+    Ng2SearchPipeModule ,// импортируйте Ng2SearchPipeModule
+    ModalModule.forRoot(),
   ],
   providers: [
     AppComponent,

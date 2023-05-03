@@ -9,6 +9,8 @@ export interface Book {
     description: string;
     category: Category;
     rating: number;
+    likes: number;
+    link: string;
 }
 
 export interface Category {
@@ -23,6 +25,8 @@ export interface AuthToken{
 export interface User {
     id: number;
     username: string;
+    first_name: string;
+    second_name: string
     email: string;
     password: string;
 }

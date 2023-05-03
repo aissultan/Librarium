@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../services/book.service';
-import {Book, Comment, Review, User} from '../models';
+import {Book, BookShelf, Comment, Review, User} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
+import { BookshelfService } from '../services/bookshelf.service';
+
 import { LoginService } from '../services/login.service';
 
 
@@ -13,9 +15,14 @@ import { LoginService } from '../services/login.service';
   styleUrls: ['./book-detail.component.css']
 })
 export class BookDetailComponent implements OnInit {
+
+  statusBookshelf : boolean;
+  bookshelves : BookShelf[] = [];
+  newBookshelf : BookShelf;
   user: User;
   book: Book;
   loaded: boolean;
+  link : string;
   comments: Comment[] = [];
   reviews: Review[] = [];
   extraBooks: Book[] = [];
@@ -40,14 +47,21 @@ export class BookDetailComponent implements OnInit {
   updReviewComment: string = '';
   updRating: number = 0;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
+  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService,private bookshelfService : BookshelfService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
+    this.newBookshelf = {} as BookShelf;
+    this.statusBookshelf = false;
     this.loaded = true;
+    this.link = '';
     this.user = {} as User;
 
   }
 
   ngOnInit(): void {
+    this.bookshelfService.getBookshelves().subscribe((data:BookShelf[])=>{
+      this.bookshelves = data;
+    })
+
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
@@ -55,6 +69,7 @@ export class BookDetailComponent implements OnInit {
       this.bookService.getBook(id).subscribe((book) => {
         this.book = book;
         this.loaded = true;
+        this.link = book.link;
 
         this.bookService.getBooksComments(this.book.id).subscribe((data: Comment[]) => {
           this.comments = data;
@@ -79,7 +94,16 @@ export class BookDetailComponent implements OnInit {
       this.user = user;
     });
   }
-  
+  addBookshelf() {
+    // this.modalService.show(BookshelfCreateComponent,);
+    this.statusBookshelf = true;
+  }
+  addBook(){
+
+  }
+  createBookshelf(){
+    
+  }
   submitReview() {
     this.reviewService.createReview(this.book.id, this.reviewComment, this.reviewRating).subscribe((data: Review) => {
       this.reviews.push(data);
@@ -92,6 +116,9 @@ export class BookDetailComponent implements OnInit {
       this.comments.push(data);
       this.comment = '';
     })
+  }
+  telega(){
+    window.open(`https://t.me/share/url?url=${this.link}&text=xssxcfscxscsc`)
   }
 
   deleteComment(comment_id: number) {
