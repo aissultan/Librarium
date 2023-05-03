@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,10 +11,11 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordChangeView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User,auth
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 # def registration(request):
 #     if request.method == 'POST':
 #         first_name = request.POST['first_name']
@@ -54,7 +56,26 @@ def register(request):
 
         # Return a success message
         return JsonResponse({'success': 'User registered successfully.'})
-    
+@csrf_exempt
+@api_view(['POST'])   
+@permission_classes([AllowAny])
+def update_password(request):
+    data = json.loads(request.body)
+    email = data.get('email')
+    password = data.get('password')
+    if User.objects.filter(email = email).exists():
+        user = User.objects.get(email = email)
+        user.set_password(password)
+        user.save()
+        return JsonResponse({'success': 'Password reset successfully'})
+@csrf_exempt
+@api_view(['GET', 'POST'])   
+def get_bookshelves(request):
+    if request.method == 'GET':
+        bookshelves = BookShelf.objects.all()
+        serializer = BookShelfSerializer(bookshelves, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
@@ -160,6 +181,12 @@ class BookDetailAPIView(APIView):
         book = self.get_book(id)
         book.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
+
+# class PasswordChange(PasswordChangeView):
+#     form_class=''
+#     success_url = reverse_lazy()
+# def password_success(request):
+
 
 # Review views 
 class ReviewListAPIView(ListAPIView):

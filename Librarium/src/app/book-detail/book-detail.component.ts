@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../services/book.service';
-import {Book, Comment, Review, User} from '../models';
+import {Book, BookShelf, Comment, Review, User} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
+import { BookshelfService } from '../services/bookshelf.service';
+
 
 
 @Component({
@@ -13,8 +15,12 @@ import { ReviewService } from '../review.service';
 })
 export class BookDetailComponent implements OnInit {
 
+  statusBookshelf : boolean;
+  bookshelves : BookShelf[] = [];
+  newBookshelf : BookShelf;
   book: Book;
   loaded: boolean;
+  link : string;
   comments: Comment[] = [];
   reviews: Review[] = [];
   extraBooks: Book[] = [];
@@ -30,14 +36,19 @@ export class BookDetailComponent implements OnInit {
   reviewComment: string = '';
   reviewRating: number = 0;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
+  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService,private bookshelfService : BookshelfService,private router : Router) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
+    this.newBookshelf = {} as BookShelf;
+    this.statusBookshelf = false;
     this.loaded = true;
+    this.link = '';
 
   }
 
   ngOnInit(): void {
-
+    this.bookshelfService.getBookshelves().subscribe((data:BookShelf[])=>{
+      this.bookshelves = data;
+    })
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.route.paramMap.subscribe((params) => {
@@ -46,6 +57,7 @@ export class BookDetailComponent implements OnInit {
       this.bookService.getBook(id).subscribe((book) => {
         this.book = book;
         this.loaded = true;
+        this.link = book.link;
 
         this.bookService.getBooksComments(this.book.id).subscribe((data: Comment[]) => {
           this.comments = data;
@@ -66,6 +78,16 @@ export class BookDetailComponent implements OnInit {
       })
     });
   }
+  addBookshelf() {
+    // this.modalService.show(BookshelfCreateComponent,);
+    this.statusBookshelf = true;
+  }
+  addBook(){
+
+  }
+  createBookshelf(){
+    
+  }
   submitReview() {
     this.reviewService.createReview(this.reviewComment, this.reviewRating).subscribe((data: Review) => {
       this.reviews.push(data);
@@ -78,6 +100,9 @@ export class BookDetailComponent implements OnInit {
       this.comments.push(data);
       this.comment = '';
     })
+  }
+  telega(){
+    window.open(`https://t.me/share/url?url=${this.link}&text=xssxcfscxscsc`)
   }
 
   // rate(star: string) {

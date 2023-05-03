@@ -121,6 +121,8 @@ class Book(models.Model):
     description = models.TextField()
     rating = models.FloatField(default=0)
     objects = BookManager()
+    likes = models.IntegerField(null=True)
+    link = models.URLField(null=True)
 
 
     class Meta:
