@@ -4,6 +4,7 @@ import { BookService } from '../services/book.service';
 import {Book, Comment, Review, User} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
+import { LoginService } from '../services/login.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { ReviewService } from '../review.service';
   styleUrls: ['./book-detail.component.css']
 })
 export class BookDetailComponent implements OnInit {
-
+  user: User;
   book: Book;
   loaded: boolean;
   comments: Comment[] = [];
@@ -25,20 +26,28 @@ export class BookDetailComponent implements OnInit {
 
   // For getting comment input
   comment: string = '';
-
+ 
   // For getting review input
   reviewComment: string = '';
   reviewRating: number = 0;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
+  // Update comment
+  isUComment: boolean = false;
+  updComment: string = '';
+
+  // Update review
+  isUReview: boolean = false;
+  updReviewComment: string = '';
+  updRating: number = 0;
+
+  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
     this.loaded = true;
+    this.user = {} as User;
 
   }
 
   ngOnInit(): void {
-
-
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
@@ -65,36 +74,66 @@ export class BookDetailComponent implements OnInit {
         })
       })
     });
+
+    this.loginService.getUser().subscribe(user => {
+      this.user = user;
+    });
   }
+  
   submitReview() {
-    this.reviewService.createReview(this.reviewComment, this.reviewRating).subscribe((data: Review) => {
+    this.reviewService.createReview(this.book.id, this.reviewComment, this.reviewRating).subscribe((data: Review) => {
       this.reviews.push(data);
       this.reviewComment = '';
     })
   }
 
   submitCommet() {
-    this.commentService.writeComment(this.book, this.comment).subscribe((data: Comment) => {
+    this.commentService.writeComment(this.book.id, this.comment).subscribe((data: Comment) => {
       this.comments.push(data);
       this.comment = '';
     })
   }
 
-  // rate(star: string) {
-  //   const index = this.stars.indexOf(star);
-  //   for(let i=0; i<5; i++) {
-  //     if(i <= index) {
-  //       this.stars[i] = 'star';
-  //     } else {
-  //       this.stars[i] = 'star_border';
-  //     }
-  //   }
-  // }
+  deleteComment(comment_id: number) {
+    this.commentService.deleteComment(comment_id).subscribe((data: any) => {
+      this.comments = this.comments.filter((comment) => comment.id !== comment_id)
+    })
+  }
 
-  // writeComment() {
-  //   this.commentService.writeComment(this.comment).subscribe((data: Comment) => {
-  //     this.comments.push(data);
-  //     this.comment = '';
-  //   })
-  // }
+  deleteReview(review_id: number) {
+    this.reviewService.deleteReview(review_id).subscribe((data: any) => {
+      this.reviews = this.reviews.filter((review) => review.id !== review_id)
+    })
+  }
+
+  updateComment(comment_id: number) {
+    this.commentService.updateComment(comment_id, this.book.id, this.updComment).subscribe((data: Comment) => {
+      this.updComment = '';
+      const index = this.comments.findIndex(comment => comment.id === data.id);
+      if (index !== -1) {
+        this.comments[index] = data;
+      }
+    })
+  }
+
+  updateReview(review_id: number) {
+    this.reviewService.updateReview(review_id, this.book.id, this.updReviewComment, this.updRating).subscribe((data: any) => {
+      this.updReviewComment = '';
+      const index = this.reviews.findIndex(review => review.id === data.id);
+      if (index !== -1) {
+        this.reviews[index] = data;
+      }
+    })
+  }
+
+  setComment() {
+    this.isUComment = !this.isUComment;
+  }
+
+  setReview() {
+    this.isUReview = !this.isUReview;
+    console.log(this.isUComment);
+  }
+
+
 }

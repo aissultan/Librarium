@@ -1,5 +1,4 @@
 import json
-from django.shortcuts import redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -12,22 +11,10 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User,auth
-from rest_framework.permissions import IsAuthenticated
-# def registration(request):
-#     if request.method == 'POST':
-#         first_name = request.POST['first_name']
-#         last_name = request.POST['last_name']
-#         username = request.POST['username']
-#         email = request.POST['email']
-#         password = request.POST['password']
-#         confirm_password = request.POST['confirm_password']
-#         if password == confirm_password:
-#             if User.objects.filter(username=username).exists():
-#                 messages.info(request,'email is exist')
-#                 return redirect(register)
+from django.contrib.auth.models import User
 
 User = get_user_model()
+
 @csrf_exempt
 @api_view(['GET'])
 def get_user(request):
@@ -35,6 +22,7 @@ def get_user(request):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -166,7 +154,6 @@ class ReviewListAPIView(ListAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
    
-
 class ReviewRetrieveAPIView(RetrieveAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
@@ -175,6 +162,9 @@ class ReviewRetrieveAPIView(RetrieveAPIView):
 class ReviewCreateAPIView(CreateAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ReviewUpdateAPIView(UpdateAPIView):
     serializer_class = ReviewSerializer
@@ -224,7 +214,6 @@ class CommentListAPIView(ListAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
-
 # Retrieve a specific comment by ID
 class CommentRetrieveAPIView(RetrieveAPIView):
     serializer_class = CommentSerializer
@@ -236,11 +225,15 @@ class CommentCreateAPIView(CreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 # Update an existing comment
 class CommentUpdateAPIView(UpdateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     lookup_field = 'id'
+    # lookup_url_kwarg = "id"
 
 # Delete an existing comment
 class CommentDeleteAPIView(DestroyAPIView):
@@ -352,8 +345,3 @@ class UserView(APIView):
         user = Token.objects.get(key=token[1]).user
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data)
-# @csrf_exempt
-# @api_view([ 'POST'])
-# def register_user(request):
-#     if request.method == 'POST':
-

@@ -1,97 +1,16 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
-import datetime 
 from django.db import models 
 from django.contrib.auth import get_user_model 
-from django.contrib.auth.models import Group, Permission 
-from django.contrib.auth.base_user import BaseUserManager 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin 
  
-class UserManager(BaseUserManager):
-    def create_user(self, username, email, password=None, **extra_fields):
-        """
-        Creates and saves a User with the given email, username, and password.
-        """
-        if not email:
-            raise ValueError('The Email field must be set.')
-        if not username:
-            raise ValueError('The Username field must be set.')
-        email = self.normalize_email(email)
-        user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(password)
-        user.is_staff = False
-        user.is_superuser = False
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, username, email, password=None, **extra_fields):
-        """
-        Creates and saves a superuser with the given email, username, and password.
-        """
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, email, password, **extra_fields)
-
-class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=30, unique=True)
-    password = models.CharField(max_length=128)
-
-    groups = models.ManyToManyField(
-        Group,
-        verbose_name='groups',
-        blank=True,
-        related_name='api_user_groups'
-    )
-    
-    user_permissions = models.ManyToManyField(
-        Permission,
-        verbose_name='user permissions',
-        blank=True,
-        related_name='api_user_permissions'
-    )
-
-    USERNAME_FIELD = 'username'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email']
-
-    objects = UserManager()
-
-    class Meta:
-        verbose_name = 'user'
-        verbose_name_plural = 'users'
-
-    def __str__(self):
-        return self.username
-
-
-# class User(AbstractUser):
-#     email = models.EmailField(unique=True)
-#     username = models.CharField(max_length=30, unique=True)
-#     password = models.CharField(max_length=128)
-    
-#     groups = models.ManyToManyField(
-#         Group,
-#         verbose_name='groups',
-#         blank=True,
-#         related_name='api_user_groups'
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         verbose_name='user permissions',
-#         blank=True,
-#         related_name='api_user_permissions'
-#     )
-    
-#     USERNAME_FIELD = 'username'
+User = get_user_model()
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,null=True)
 
     class Meta:
-        verbose_name = 'Category'
+        verbose_name='Category'
         verbose_name_plural = 'Categories'
 
     def __str__(self):
@@ -102,7 +21,6 @@ class Category(models.Model):
             'id': self.id,
             'name': self.name
         }
-
 
 class BookManager(models.Manager):
     def get_books_by_author(self, author):
@@ -120,8 +38,9 @@ class Book(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.TextField()
     rating = models.FloatField(default=0)
+    likes = models.IntegerField(default=0)
+    link = models.URLField(null=True)
     objects = BookManager()
-
 
     class Meta:
         verbose_name = 'Book'
@@ -144,11 +63,11 @@ class Book(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)    
-    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(auto_now_add=True, null=True)
+
     rating = models.IntegerField()
     comment = models.TextField()
-    # date = models.DateField(default=timezone.now, null=True)
 
     class Meta:
         verbose_name = 'Review'
@@ -163,7 +82,8 @@ class Review(models.Model):
             'book': self.book.title,
             'user': self.user.username,
             'rating': self.rating,
-            'comment': self.comment
+            'comment': self.comment,
+            'date': self.date.isoformat(),
         }
 
 # "BookShelf" - модель для книжных полок, которые пользователи могут
@@ -193,7 +113,8 @@ class BookShelf(models.Model):
 # могут оставлять на страницах книг или отзывов.
 class Comment(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     date = models.DateField(auto_now_add=True)
 
@@ -202,13 +123,13 @@ class Comment(models.Model):
         verbose_name_plural = 'Comments'
 
     def __str__(self):
-        return f'Comment #{self.id}, {self.book}, {self.user.username}, {self.content}, {self.date}'
+        return f'Comment #{self.id}, {self.book}, {self.user}, {self.content}, {self.date}'
 
     def to_json(self):
         return {
             'id': self.id,
             'book': self.book.title,
-            'user': self.user.username,
-            'content': self.content,
+            'user': self.user,
             'date': self.date.isoformat(),
+            'content': self.content,
         }
