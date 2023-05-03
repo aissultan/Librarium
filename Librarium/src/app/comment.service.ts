@@ -10,32 +10,27 @@ import { switchMap } from 'rxjs/operators';
 
 export class CommentService {
 
-  BASE_URL = 'http://127.0.0.1:8000/';
+  BASE_URL = 'http://127.0.0.1:8000/api';
 
   constructor(private client: HttpClient) {}
 
-  writeComment(book: Book, comment: string): Observable<Comment> {
-    const now = new Date();
+  writeComment(book_id: number, comment: string): Observable<Comment> {
     return this.client.post<Comment>(`${this.BASE_URL}/comments-create/`, 
     {
-      book: book,
+      book: book_id,
       content: comment,
-      date: now.toISOString()
     })
   }
 
-  // getComments() {
-  //   return this.client.get<Comment[]>(`http://127.0.0.1:8000/api/comments/`).pipe(
-  //     map(comments => {
-  //       // Добавляем поле username к каждому комментарию
-  //       return comments.map(comment => {
-  //         const username = comment.user;
-  //         return {
-  //           ...comment,
-  //           username
-  //         };
-  //       });
-  //     })
-  //   );
-  // }
+  updateComment(comment_id: number, book_id: number, comment: string): Observable<Comment> {
+    return this.client.put<Comment>(`${this.BASE_URL}/comment-update/${comment_id}`,
+    {
+      book: book_id,
+      content: comment 
+    })
+  }
+
+  deleteComment(comment_id: number): Observable<any> {
+    return this.client.delete(`${this.BASE_URL}/comment-delete/${comment_id}`)
+  }
 }

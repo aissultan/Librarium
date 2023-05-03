@@ -19,10 +19,28 @@ export class ReviewService {
   //   })
   // }
 
-  createReview(reviewComment: string, reviewRating: number): Observable<Review> {
-    return this.client.post<Review>(`${this.BASE_URL}/reviews/`,
+  createReview(book_id: number, reviewComment: string, reviewRating: number): Observable<Review> {
+    console.log(reviewRating) 
+    console.log(book_id)
+    console.log(reviewComment)
+    return this.client.post<Review>(`${this.BASE_URL}/review-create/`,
     {
+      book: book_id,
+      rating: reviewRating,
+      comment: reviewComment
+    })
+  }
 
+  deleteReview(review_id: number): Observable<any> {
+    return this.client.delete<any>(`${this.BASE_URL}/review-delete/${review_id}`)
+  }
+
+  updateReview(review_id: number, book_id: number, newComment: string, newRating: number): Observable<Review> {
+    return this.client.put<Review>(`${this.BASE_URL}/review-update/${review_id}`, 
+    {
+      book: book_id,
+      rating: newRating,
+      comment: newComment
     })
   }
 }

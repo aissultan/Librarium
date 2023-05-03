@@ -39,28 +39,66 @@
     </div>
     <div id="line"></div>
 
-    <div id="comments"> 
+    <div id="comments">
         <p class="cool-word">Comments</p>
-        <div *ngFor="let comment of comments" id="comment">
-            <p>{{comment.username}}</p>
-            <p id="comment-content">{{comment.content}}</p>    
-            <p id="comment-date">{{comment.date}}</p>
+        <div *ngFor="let comment of comments" class="comment">
+            <div *ngIf="comment.username==user.username">
+                <p class="comment-author">{{comment.username}}</p>
+                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-date">{{comment.date}}</p>
+                <button (click)="deleteComment(comment.id)" class="delete-button">Delete</button>
+                <button (click)="setComment()" class="update-button">Update</button>
+                <div *ngIf="isUComment">
+                    <label class="leave" id="special">Enter new comment</label>
+                    <input type="text" placeholder="Your opinion" name="updComment" [(ngModel)]="updComment" class="input-comment">
+                    <button (click)="updateComment(comment.id)" class="ok-button">OK</button>
+                </div>
+            </div>
+            <div *ngIf="comment.username !== user.username">
+                <p class="comment-author">{{comment.username}}</p>
+                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-date">{{comment.date}}</p>
+            </div>
         </div>
-        <div *ngIf="!isComments">
-            <p>There are no comments yet. Be the first!</p>
+        <div *ngIf="!isComments" id="noComments">
+            <p class="no-content">There are no comments yet. Be the first!</p>
         </div>
-        <label>Leave a comment</label>
-        <input type="text" placeholder="Your opinion" [(ngModel)]="comment"><button (click)="submitCommet()">OK</button>
+        <label class="leave">Leave a comment</label>
+        <input type="text" placeholder="Your opinion" name="comment" [(ngModel)]="comment" class="input-comment"><button (click)="submitCommet()" class="ok-button">OK</button>
     </div>
 
     <div id="line"></div>
 
     <div id="reviews">
         <p class="cool-word">Reviews</p>
-        <div *ngFor="let review of reviews" id="comment">
-            <p>{{review.username}}</p>
-            <p>{{review.rating}}/5</p>
-            <p>{{review.comment}}</p>
+        <div *ngFor="let review of reviews" class="comment">
+            <div *ngIf="review.username == user.username">
+                <p class="comment-author">{{review.username}}</p>
+                <p class="review-rating">{{review.rating}}/5</p>
+                <p class="comment-content">{{review.comment}}</p>
+                <p class="comment-date">{{review.date}}</p>
+                <button (click)="deleteReview(review.id)" class="delete-button">Delete</button>
+                <button (click)="setReview()" class="update-button">Update</button>
+                <div *ngIf="isUReview">
+                    <label class="opinion">Your new rating.</label>
+                    <div class="rating">
+                        <input type="radio" name="updRating" value="1" [(ngModel)]="updRating" class="rate">
+                        <input type="radio" name="updRating" value="2" [(ngModel)]="updRating" class="rate">
+                        <input type="radio" name="updRating" value="3" [(ngModel)]="updRating" class="rate">
+                        <input type="radio" name="updRating" value="4" [(ngModel)]="updRating" class="rate">
+                        <input type="radio" name="updRating" value="5" [(ngModel)]="updRating" class="rate">
+                    </div>
+                    <label class="opinion">Your opinion about the book</label>
+                    <input type="text" [(ngModel)]="updReviewComment" name="updReviewComment" placeholder="In my opinion..." class="input-review">
+                    <button (click)="updateReview(review.id)" class="submit-button">Update</button>
+                </div>
+            </div>
+            <div *ngIf="review.username !== user.username">
+                <p class="comment-author">{{review.username}}</p>
+                <p class="review-rating">{{review.rating}}/5</p>
+                <p class="comment-content">{{review.comment}}</p>
+                <p class="comment-date">{{review.date}}</p>
+            </div>
         </div>
         <div *ngIf="!isReviews">
             <p>There are no reviews yet. Be the first!</p>
@@ -68,18 +106,18 @@
         <form id="review-writing">
             <p id="would-you">Would you like to share your opinion?</p>
             <p id="help-others">Help others to choose a book!</p>
-            <label>Your rating for this book is from 1 to 5.</label>
+            <label class="opinion">Your rating for this book is from 1 to 5.</label>
             <div class="rating">
-                <input type="radio" name="rating" value="1" [(ngModel)]="reviewRating">
-                <input type="radio" name="rating" value="2" [(ngModel)]="reviewRating">
-                <input type="radio" name="rating" value="3" [(ngModel)]="reviewRating">
-                <input type="radio" name="rating" value="4" [(ngModel)]="reviewRating">
-                <input type="radio" name="rating" value="5" [(ngModel)]="reviewRating">
+                <input type="radio" name="rating" value="1" [(ngModel)]="reviewRating" class="rate">
+                <input type="radio" name="rating" value="2" [(ngModel)]="reviewRating" class="rate">
+                <input type="radio" name="rating" value="3" [(ngModel)]="reviewRating" class="rate">
+                <input type="radio" name="rating" value="4" [(ngModel)]="reviewRating" class="rate">
+                <input type="radio" name="rating" value="5" [(ngModel)]="reviewRating" class="rate">
             </div>
-            <label>Your opinion about the book</label>
-            <input type="text" [(ngModel)]="reviewComment" placeholder="In my opinion...">
-            <button (click)="submitReview()">Submit</button>
-        </form>
+            <label class="opinion">Your opinion about the book</label>
+            <input type="text" [(ngModel)]="reviewComment" name="reviewComment" placeholder="In my opinion..." class="input-review">
+            <button (click)="submitReview()" class="submit-button">Submit</button>
+        </form> 
     </div>
 
     <div id="line"></div>

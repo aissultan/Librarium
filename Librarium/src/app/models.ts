@@ -38,6 +38,7 @@ export interface Review {
     username: string;
     rating: number;
     comment: string;
+    date: Date;
 }
 
 export interface BookShelf {

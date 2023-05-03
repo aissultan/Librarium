@@ -14,19 +14,21 @@ export class PersonalPageComponent {
   username: string | undefined;
   email: string | undefined;
   activeTab = 'books';
+
   constructor(private client: HttpClient, private loginService: LoginService) {
     this.user = {} as User;
   }
+
   ngOnInit() {
+    
     this.loginService.getUser().subscribe(user => {
       this.user = user;
       this.username = user.username;
       this.email = user.email;
     });
   }
+
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
-
-  
 }

@@ -28,8 +28,10 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 #             if User.objects.filter(username=username).exists():
 #                 messages.info(request,'email is exist')
 #                 return redirect(register)
+from django.contrib.auth.models import User
 
 User = get_user_model()
+
 @csrf_exempt
 @api_view(['GET'])
 def get_user(request):
@@ -37,6 +39,7 @@ def get_user(request):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+    
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -193,7 +196,6 @@ class ReviewListAPIView(ListAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
    
-
 class ReviewRetrieveAPIView(RetrieveAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
@@ -202,6 +204,9 @@ class ReviewRetrieveAPIView(RetrieveAPIView):
 class ReviewCreateAPIView(CreateAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class ReviewUpdateAPIView(UpdateAPIView):
     serializer_class = ReviewSerializer
@@ -251,7 +256,6 @@ class CommentListAPIView(ListAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
-
 # Retrieve a specific comment by ID
 class CommentRetrieveAPIView(RetrieveAPIView):
     serializer_class = CommentSerializer
@@ -263,17 +267,23 @@ class CommentCreateAPIView(CreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 # Update an existing comment
 class CommentUpdateAPIView(UpdateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     lookup_field = 'id'
+    # lookup_url_kwarg = "id"
 
 # Delete an existing comment
 class CommentDeleteAPIView(DestroyAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
     lookup_field = 'id'    
+
+
 
 # @csrf_exempt
 # @api_view(['POST'])
@@ -379,8 +389,3 @@ class UserView(APIView):
         user = Token.objects.get(key=token[1]).user
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data)
-# @csrf_exempt
-# @api_view([ 'POST'])
-# def register_user(request):
-#     if request.method == 'POST':
-

@@ -11,8 +11,7 @@ export class LoginService {
   private loggedStatus = new BehaviorSubject<boolean>(false);
   logged = this.loggedStatus.asObservable();
 
-  constructor(private client: HttpClient) {
-  }
+  constructor(private client: HttpClient) {}
 
   setStatus(newValue: boolean) {
     this.loggedStatus.next(newValue);
