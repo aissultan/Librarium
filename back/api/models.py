@@ -216,14 +216,14 @@ class Comment(models.Model):
         }
 
 
-def add_to_favorites(request, book_id):
-    book = get_object_or_404(Book, pk=book_id)
-    user = request.user
+# def add_to_favorites(request, book_id):
+#     book = get_object_or_404(Book, pk=book_id)
+#     user = request.user
 
-    # Добавляем книгу в список избранного пользователя, если её там ещё нет
-    if book not in user.favorites.all():
-        user.favorites.add(book)
+#     # Добавляем книгу в список избранного пользователя, если её там ещё нет
+#     if book not in user.favorites.all():
+#         user.favorites.add(book)
 
-    # Перенаправляем пользователя на страницу книги
-    return redirect('book_detail', book_id=book_id)
+#     # Перенаправляем пользователя на страницу книги
+#     return redirect('book_detail', book_id=book_id)
 

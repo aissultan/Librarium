@@ -12,11 +12,10 @@ import { FavBookService } from '../favbook.service';
 
 export class PersonalPageComponent implements OnInit{
   user: User;
-  favbook: FavBook[] = [];
   username: string | undefined;
   email: string | undefined;
   activeTab = 'books';
-  constructor(private client: HttpClient, private loginService: LoginService, private favbookService: FavBookService) {
+  constructor(private client: HttpClient, private loginService: LoginService) {
     this.user = {} as User;
   }
 

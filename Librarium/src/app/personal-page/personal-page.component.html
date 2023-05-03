@@ -20,11 +20,7 @@
     <div class="profile-books" *ngIf="activeTab === 'books'"[ngClass]="{'active': activeTab === 'books'}" >
       <h2>Saved books</h2>
 
-      <div *ngFor="let favbook of favbook">
-        <p>{{favbook.username}}</p>
-        <p >{{favbook.book}}</p>
-      </div>
-
+    
 
     </div>
     <div class="profile-books" *ngIf="activeTab === 'topbook'"[ngClass]="{'active': activeTab === 'topbook'}" >

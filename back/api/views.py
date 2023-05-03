@@ -391,24 +391,24 @@ class UserView(APIView):
 #     if request.method == 'POST':
 
 
-def add_favorite_book(request):
-    book_id = request.POST.get('book_id')
-    user = request.user
-    book = Book.objects.get(id=book_id)
+# def add_favorite_book(request):
+#     book_id = request.POST.get('book_id')
+#     user = request.user
+#     book = Book.objects.get(id=book_id)
 
-    try:
-        favorite_book = FavoriteBook.objects.get(user=user, book=book)
-        favorite_book.delete()
-        message = 'Book removed from favorites.'
-    except FavoriteBook.DoesNotExist:
-        favorite_book = FavoriteBook(user=user, book=book)
-        favorite_book.save()
-        message = 'Book added to favorites.'
+#     try:
+#         favorite_book = FavoriteBook.objects.get(user=user, book=book)
+#         favorite_book.delete()
+#         message = 'Book removed from favorites.'
+#     except FavoriteBook.DoesNotExist:
+#         favorite_book = FavoriteBook(user=user, book=book)
+#         favorite_book.save()
+#         message = 'Book added to favorites.'
 
-    response = {
-        'success': True,
-        'message': message
-    }
-    return JsonResponse(response)
+#     response = {
+#         'success': True,
+#         'message': message
+#     }
+#     return JsonResponse(response)
 
 
