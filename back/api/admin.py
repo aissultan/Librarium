@@ -28,3 +28,4 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id', 'book', 'user', 'rating', 'comment')
     list_filter = ('book', 'user')
     search_fields = ('book', 'user')
+

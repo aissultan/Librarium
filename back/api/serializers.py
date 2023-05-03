@@ -67,6 +67,10 @@ class BookShelfSerializer(serializers.ModelSerializer):
         model = BookShelf
         fields = ['id', 'name', 'user', 'books']
 
+
+
+
+
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.username')
 

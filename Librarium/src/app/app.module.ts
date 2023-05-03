@@ -29,6 +29,7 @@ import { AboutComponent } from './about/about.component';
     RegistrationComponent,
     HomeComponent,
     BooksComponent,
+
     SignInComponent,
     SignUpComponent,
     NotFoundComponent,

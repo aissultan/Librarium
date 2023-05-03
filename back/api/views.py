@@ -12,8 +12,9 @@ from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User,auth
+from django.contrib.auth.models import User, auth
 from rest_framework.permissions import IsAuthenticated
+
 # def registration(request):
 #     if request.method == 'POST':
 #         first_name = request.POST['first_name']
@@ -28,13 +29,17 @@ from rest_framework.permissions import IsAuthenticated
 #                 return redirect(register)
 
 User = get_user_model()
+
+
 @csrf_exempt
 @api_view(['GET'])
 def get_user(request):
-    if request.method == 'GET':        
+    if request.method == 'GET':
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -54,12 +59,13 @@ def register(request):
 
         # Return a success message
         return JsonResponse({'success': 'User registered successfully.'})
-    
+
+
 # Category views
 @csrf_exempt
 @api_view(['GET', 'POST'])
 # @permission_classes([IsAuthenticated])
-def get_categories(request): 
+def get_categories(request):
     if request.method == 'GET':
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
@@ -71,10 +77,11 @@ def get_categories(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 @csrf_exempt
 @api_view(['GET', 'PUT', 'DELETE'])
-def get_category(request, id): 
+def get_category(request, id):
     try:
         category = Category.objects.get(id=id)
     except Category.DoesNotExist as error:
@@ -83,18 +90,17 @@ def get_category(request, id):
     if request.method == 'GET':
         serializer = CategorySerializer(category)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     elif request.method == 'PUT':
         serializer = CategorySerializer(instance=category, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     elif request.method == 'DELETE':
         category.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
-
 @csrf_exempt
 @api_view(['GET'])
 def get_category_books(request, id):
@@ -104,6 +110,8 @@ def get_category_books(request, id):
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def get_books_comments(request, id):
@@ -112,7 +120,8 @@ def get_books_comments(request, id):
         comments = Comment.objects.filter(book=book)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
+
 @csrf_exempt
 @api_view(['GET'])
 def get_books_reviews(request, id):
@@ -122,13 +131,14 @@ def get_books_reviews(request, id):
         serializer = ReviewSerializer(reviews, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Books views 
+
+# Books views
 class BooksAPIView(APIView):
     def get(self, request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def post(self, request):
         serializer = BookSerializer(data=request.data)
         if serializer.is_valid():
@@ -136,18 +146,19 @@ class BooksAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class BookDetailAPIView(APIView):
     def get_book(self, id):
-        try: 
+        try:
             return Book.objects.get(id=id)
         except Book.DoesNotExist as e:
             return Response(str(e), status=status.HTTP_404_NOT_FOUND)
-        
+
     def get(self, request, id):
         book = self.get_book(id)
         serializer = BookSerializer(book)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
     def put(self, request, id):
         book = self.get_book(id)
         serializer = BookSerializer(instance=book, data=request.data, partial=True)
@@ -155,38 +166,44 @@ class BookDetailAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, id):
         book = self.get_book(id)
         book.delete()
         return Response({'deleted': True}, status=status.HTTP_204_NO_CONTENT)
 
-# Review views 
+
+
+# Review views
 class ReviewListAPIView(ListAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
-   
+
 
 class ReviewRetrieveAPIView(RetrieveAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
     lookup_field = 'id'
 
+
 class ReviewCreateAPIView(CreateAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
+
 
 class ReviewUpdateAPIView(UpdateAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
     lookup_field = 'id'
 
+
 class ReviewDeleteAPIView(DestroyAPIView):
     serializer_class = ReviewSerializer
     queryset = Review.objects.all()
     lookup_field = 'id'
 
-# BookShelf views 
+
+# BookShelf views
 
 # View for creating a new BookShelf:
 class BookShelfCreateView(CreateAPIView):
@@ -195,20 +212,24 @@ class BookShelfCreateView(CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 # View for retrieving a specific BookShelf:
 class BookShelfDetailView(RetrieveAPIView):
     serializer_class = BookShelfSerializer
     queryset = BookShelf.objects.all()
+
 
 # View for updating an existing BookShelf:
 class BookShelfUpdateView(UpdateAPIView):
     serializer_class = BookShelfSerializer
     queryset = BookShelf.objects.all()
 
+
 # View for deleting an existing BookShelf:
 class BookShelfDeleteView(DestroyAPIView):
     serializer_class = BookShelfSerializer
     queryset = BookShelf.objects.all()
+
 
 # View for listing all BookShelfs owned by a specific user:
 class BookShelfListView(ListAPIView):
@@ -218,7 +239,7 @@ class BookShelfListView(ListAPIView):
         return BookShelf.objects.filter(user=self.request.user)
 
 
-# Comments views 
+# Comments views
 # List all comments
 class CommentListAPIView(ListAPIView):
     serializer_class = CommentSerializer
@@ -231,10 +252,12 @@ class CommentRetrieveAPIView(RetrieveAPIView):
     queryset = Comment.objects.all()
     lookup_field = 'id'
 
+
 # Create a new comment
 class CommentCreateAPIView(CreateAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+
 
 # Update an existing comment
 class CommentUpdateAPIView(UpdateAPIView):
@@ -242,15 +265,17 @@ class CommentUpdateAPIView(UpdateAPIView):
     queryset = Comment.objects.all()
     lookup_field = 'id'
 
+
 # Delete an existing comment
 class CommentDeleteAPIView(DestroyAPIView):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
-    lookup_field = 'id'    
-
+    lookup_field = 'id'
 
 
 # @csrf_exempt
+
+
 # @api_view(['POST'])
 # def add_comment(request, book_id):
 #     book = get_object_or_404(Book, id=book_id)
@@ -323,12 +348,14 @@ class CommentDeleteAPIView(DestroyAPIView):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
-@csrf_exempt 
-@api_view(['GET']) 
+
+
+@csrf_exempt
+@api_view(['GET'])
 @permission_classes([AllowAny])
-def get_user(request): 
-    user = request.user 
-    serializer = UserSerializer(user) 
+def get_user(request):
+    user = request.user
+    serializer = UserSerializer(user)
     return Response(serializer.data)
 
 
@@ -339,12 +366,14 @@ def get_books_by_author(request, author):
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @csrf_exempt
 @api_view(['GET'])
 def get_books_by_publisher(request, publisher):
     books = Book.objects.get_books_by_publisher(publisher)
     serializer = BookSerializer(books, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class UserView(APIView):
     permission_classes = [AllowAny]
@@ -354,8 +383,32 @@ class UserView(APIView):
         user = Token.objects.get(key=token[1]).user
         user_serializer = UserSerializer(user)
         return Response(user_serializer.data)
+
+
 # @csrf_exempt
 # @api_view([ 'POST'])
 # def register_user(request):
 #     if request.method == 'POST':
+
+
+def add_favorite_book(request):
+    book_id = request.POST.get('book_id')
+    user = request.user
+    book = Book.objects.get(id=book_id)
+
+    try:
+        favorite_book = FavoriteBook.objects.get(user=user, book=book)
+        favorite_book.delete()
+        message = 'Book removed from favorites.'
+    except FavoriteBook.DoesNotExist:
+        favorite_book = FavoriteBook(user=user, book=book)
+        favorite_book.save()
+        message = 'Book added to favorites.'
+
+    response = {
+        'success': True,
+        'message': message
+    }
+    return JsonResponse(response)
+
 

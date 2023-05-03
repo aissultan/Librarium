@@ -1,13 +1,13 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
-import datetime 
-from django.db import models 
-from django.contrib.auth import get_user_model 
-from django.contrib.auth.models import Group, Permission 
-from django.contrib.auth.base_user import BaseUserManager 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin 
- 
+import datetime
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
         """
@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         related_name='api_user_groups'
     )
-    
+
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name='user permissions',
@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 #     email = models.EmailField(unique=True)
 #     username = models.CharField(max_length=30, unique=True)
 #     password = models.CharField(max_length=128)
-    
+
 #     groups = models.ManyToManyField(
 #         Group,
 #         verbose_name='groups',
@@ -83,12 +83,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 #         blank=True,
 #         related_name='api_user_permissions'
 #     )
-    
+
 #     USERNAME_FIELD = 'username'
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Category'
@@ -102,6 +102,8 @@ class Category(models.Model):
             'id': self.id,
             'name': self.name
         }
+
+
 
 
 class BookManager(models.Manager):
@@ -144,8 +146,8 @@ class Book(models.Model):
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)    
-    
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+
     rating = models.IntegerField()
     comment = models.TextField()
     # date = models.DateField(default=timezone.now, null=True)
@@ -212,3 +214,16 @@ class Comment(models.Model):
             'content': self.content,
             'date': self.date.isoformat(),
         }
+
+
+def add_to_favorites(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    user = request.user
+
+    # Добавляем книгу в список избранного пользователя, если её там ещё нет
+    if book not in user.favorites.all():
+        user.favorites.add(book)
+
+    # Перенаправляем пользователя на страницу книги
+    return redirect('book_detail', book_id=book_id)
+

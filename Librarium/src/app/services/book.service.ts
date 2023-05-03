@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { AuthToken, } from '../models';
+import {AuthToken, FavBook,} from '../models';
 
 import { Book, Category, Review, Comment } from '../models';
 
@@ -19,7 +19,9 @@ export class BookService {
   getCategories(): Observable<Category[]> {
     return this.client.get<Category[]>(`${this.BASE_URL}/categories/`)
   }
-
+  getFavBook(): Observable<FavBook[]> {
+    return this.client.get<FavBook[]>(`${this.BASE_URL}/favbook/`)
+  }
   getBooks(): Observable<Book[]> {
     return this.client.get<Book[]>(`${this.BASE_URL}/books/`)
   }
@@ -44,5 +46,7 @@ export class BookService {
   getBooksByPublisher(publisher: string): Observable<Book[]> {
     return this.client.get<Book[]>(`${this.BASE_URL}/books-by-publisher/${publisher}/`)
   }
-  
+
+
+
 }

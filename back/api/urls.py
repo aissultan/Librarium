@@ -1,6 +1,8 @@
 from django.urls import path
 from api import views
 from rest_framework_jwt.views import obtain_jwt_token
+from .views import add_favorite_book
+
 urlpatterns = [
     path('user/',views.get_user),
     path('login/',obtain_jwt_token),
@@ -16,4 +18,5 @@ urlpatterns = [
     path('books/<int:id>/comments/', views.get_books_comments),
     path('books/<int:id>/reviews/', views.get_books_reviews),
     path('books-by-publisher/<str:publisher>/', views.get_books_by_publisher),
+
 ]

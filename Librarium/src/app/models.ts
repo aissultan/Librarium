@@ -1,4 +1,3 @@
-
 export interface Book {
     id: number;
     title: string;
@@ -50,7 +49,7 @@ export interface User {
     password: string;
     is_staff: boolean;
     is_superuser: boolean;
-}  
+}
 
 export interface Comment {
     id: number;
@@ -58,4 +57,13 @@ export interface Comment {
     book: Book;
     content: string;
     date: Date;
+}
+
+
+export interface FavBook {
+  id: number;
+  username: string;
+  book: Book;
+
+
 }
