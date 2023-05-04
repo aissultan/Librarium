@@ -51,7 +51,7 @@ export interface User {
     password: string;
     is_staff: boolean;
     is_superuser: boolean;
-}  
+}
 
 export interface Comment {
     id: number;
@@ -59,4 +59,10 @@ export interface Comment {
     book: Book;
     content: string;
     date: Date;
+}
+
+export interface Favbook{
+  id:number;
+  username:string;
+  book:Book;
 }

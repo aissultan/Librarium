@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { AuthToken, } from '../models';
 
-import { Book, Category, Review, Comment } from '../models';
+import { Book, Category, Review, Comment, Favbook } from '../models';
 
 
 @Injectable({
@@ -44,5 +44,9 @@ export class BookService {
   getBooksByPublisher(publisher: string): Observable<Book[]> {
     return this.client.get<Book[]>(`${this.BASE_URL}/books-by-publisher/${publisher}/`)
   }
-  
+
+  getFavBook(id: number): Observable<Favbook[]> {
+    return this.client.get<Favbook[]>(`${this.BASE_URL}/favbook/`)
+  }
+
 }

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Book, Review, BookShelf, Comment
+from .models import Category, Book, Review, BookShelf, Comment, FavBook
 from django.contrib.auth.models import User
 
 
@@ -74,3 +74,18 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'book', 'user', 'username', 'content', 'date']
+
+
+
+class FavBookSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+    class Meta:
+        model = FavBook
+        fields = ['id', 'book', 'user', 'username']
+
+    def create(self, validated_data):
+        try:
+            fav_book = FavBook.objects.create(**validated_data)
+            return fav_book
+        except IntegrityError:
+            raise serializers.ValidationError("This book is already in your favorites.")

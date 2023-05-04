@@ -2,8 +2,8 @@ import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer, BookShelfSerializer, CommentSerializer, UserSerializer
-from .models import Category, Book, Review, BookShelf, Comment
+from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer, BookShelfSerializer, CommentSerializer, UserSerializer, FavBookSerializer
+from .models import Category, Book, Review, BookShelf, Comment, FavBook
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.views.decorators.csrf import csrf_exempt
@@ -242,6 +242,23 @@ class CommentDeleteAPIView(DestroyAPIView):
     lookup_field = 'id'    
 
 
+class FavBookCreateAPIView(CreateAPIView):
+    serializer_class = FavBookSerializer
+    queryset = FavBook.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class FavBookDeleteAPIView(DestroyAPIView):
+    serializer_class = FavBookSerializer
+    queryset = FavBook.objects.all()
+    lookup_field = 'id'
+
+
+class FavBookListAPIView(ListAPIView):
+    serializer_class = FavBookSerializer
+    queryset = FavBook.objects.all()
 
 # @csrf_exempt
 # @api_view(['POST'])

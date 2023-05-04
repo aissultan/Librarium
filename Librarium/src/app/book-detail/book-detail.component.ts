@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../services/book.service';
-import {Book, Comment, Review, User} from '../models';
+import {Book, Comment, Review, User, Favbook} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
 import { LoginService } from '../services/login.service';
+import {FavbookService} from "../favbook.service";
 
 
 @Component({
@@ -16,6 +17,8 @@ export class BookDetailComponent implements OnInit {
   user: User;
   book: Book;
   loaded: boolean;
+  favbook: Favbook[] =[];
+  isFavbook: boolean = false;
   comments: Comment[] = [];
   reviews: Review[] = [];
   extraBooks: Book[] = [];
@@ -26,7 +29,7 @@ export class BookDetailComponent implements OnInit {
 
   // For getting comment input
   comment: string = '';
- 
+
   // For getting review input
   reviewComment: string = '';
   reviewRating: number = 0;
@@ -40,11 +43,10 @@ export class BookDetailComponent implements OnInit {
   updReviewComment: string = '';
   updRating: number = 0;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
+  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService, private loginService: LoginService, private favbookService: FavbookService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
     this.loaded = true;
     this.user = {} as User;
-
   }
 
   ngOnInit(): void {
@@ -52,6 +54,7 @@ export class BookDetailComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
       this.loaded = false;
+
       this.bookService.getBook(id).subscribe((book) => {
         this.book = book;
         this.loaded = true;
@@ -59,7 +62,11 @@ export class BookDetailComponent implements OnInit {
         this.bookService.getBooksComments(this.book.id).subscribe((data: Comment[]) => {
           this.comments = data;
           this.isComments = this.comments.length > 0;
+        })
 
+        this.bookService.getFavBook(this.book.id).subscribe((data: Favbook[]) => {
+          this.favbook = data;
+          this.isFavbook = this.favbook.length > 0;
         })
 
         this.bookService.getBooksReviews(this.book.id).subscribe((data: Review[]) => {
@@ -79,7 +86,7 @@ export class BookDetailComponent implements OnInit {
       this.user = user;
     });
   }
-  
+
   submitReview() {
     this.reviewService.createReview(this.book.id, this.reviewComment, this.reviewRating).subscribe((data: Review) => {
       this.reviews.push(data);
@@ -93,6 +100,8 @@ export class BookDetailComponent implements OnInit {
       this.comment = '';
     })
   }
+
+
 
   deleteComment(comment_id: number) {
     this.commentService.deleteComment(comment_id).subscribe((data: any) => {
@@ -135,5 +144,19 @@ export class BookDetailComponent implements OnInit {
     console.log(this.isUComment);
   }
 
+  addToFavorites() {
+    this.favbookService.addFavbook(this.book.id).subscribe((data: any) => {
+      this.favbook.push(data);
+      this.isFavbook = this.favbook.length > 0;
+    });
+  }
+
+  removeFromFavorites() {
+    this.favbookService.deleteFavbook(this.book.id).subscribe((data: any) => {
+      this.favbook = this.favbook.filter((favbook) => favbook.id !== this.book.id);
+      this.isFavbook = false;
+      this.isFavbook = this.favbook.length > 0;
+    });
+  }
 
 }

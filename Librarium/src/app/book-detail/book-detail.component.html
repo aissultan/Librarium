@@ -3,7 +3,7 @@
         <div id="const">
             <img src={{book.image}}>
             <button id="read">Read in GoodReads</button>
-            <button id="fav">Add to favorites</button>
+            <button id="fav" (click)="addToFavorites()"> Add to favorites </button>
             <p id="share-book">Share with your network:</p>
             <div id="medias">
                 <a href="https://api.whatsapp.com/send?text=Ссылка%20на%20книжку%20" target="_blank"><img class="media" id="whats" src="assets/images/Whatsapp.png"></a>
@@ -28,7 +28,7 @@
         <div *ngFor="let comment of comments" class="comment">
             <div *ngIf="comment.username==user.username">
                 <p class="comment-author">{{comment.username}}</p>
-                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-content">{{comment.content}}</p>
                 <p class="comment-date">{{comment.date}}</p>
                 <button (click)="deleteComment(comment.id)" class="delete-button">Delete</button>
                 <button (click)="setComment()" class="update-button">Update</button>
@@ -40,7 +40,7 @@
             </div>
             <div *ngIf="comment.username !== user.username">
                 <p class="comment-author">{{comment.username}}</p>
-                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-content">{{comment.content}}</p>
                 <p class="comment-date">{{comment.date}}</p>
             </div>
         </div>
@@ -101,7 +101,7 @@
             <label class="opinion">Your opinion about the book</label>
             <input type="text" [(ngModel)]="reviewComment" name="reviewComment" placeholder="In my opinion..." class="input-review">
             <button (click)="submitReview()" class="submit-button">Submit</button>
-        </form> 
+        </form>
     </div>
 
     <div id="line"></div>
