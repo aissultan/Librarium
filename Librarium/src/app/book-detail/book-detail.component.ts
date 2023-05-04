@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../services/book.service';
-<<<<<<< HEAD
-import {Book, Comment, Review, User, Favbook} from '../models';
-=======
-import {Book, BookShelf, Comment, Review, User} from '../models';
->>>>>>> origin/main
+import {Book, Comment, Review, User, Favbook, BookShelf} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
 import { BookshelfService } from '../services/bookshelf.service';
-
 import { LoginService } from '../services/login.service';
-import {FavbookService} from "../favbook.service";
+import { FavbookService } from '../favbook.service';
+
 
 
 @Component({
@@ -27,12 +23,9 @@ export class BookDetailComponent implements OnInit {
   user: User;
   book: Book;
   loaded: boolean;
-<<<<<<< HEAD
   favbook: Favbook[] =[];
   isFavbook: boolean = false;
-=======
   link : string;
->>>>>>> origin/main
   comments: Comment[] = [];
   reviews: Review[] = [];
   extraBooks: Book[] = [];
@@ -57,11 +50,7 @@ export class BookDetailComponent implements OnInit {
   updReviewComment: string = '';
   updRating: number = 0;
 
-<<<<<<< HEAD
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService, private reviewService: ReviewService, private loginService: LoginService, private favbookService: FavbookService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
-=======
-  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService,private bookshelfService : BookshelfService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
->>>>>>> origin/main
+  constructor(private route: ActivatedRoute, private favbookService: FavbookService ,private bookService: BookService, private commentService: CommentService,private bookshelfService : BookshelfService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
     this.newBookshelf = {} as BookShelf;
     this.statusBookshelf = false;
@@ -112,9 +101,7 @@ export class BookDetailComponent implements OnInit {
       this.user = user;
     });
   }
-<<<<<<< HEAD
 
-=======
   addBookshelf() {
     // this.modalService.show(BookshelfCreateComponent,);
     this.statusBookshelf = true;
@@ -123,9 +110,8 @@ export class BookDetailComponent implements OnInit {
 
   }
   createBookshelf(){
-    
+
   }
->>>>>>> origin/main
   submitReview() {
     this.reviewService.createReview(this.book.id, this.reviewComment, this.reviewRating).subscribe((data: Review) => {
       this.reviews.push(data);
@@ -186,19 +172,12 @@ export class BookDetailComponent implements OnInit {
     console.log(this.isUComment);
   }
 
-  addToFavorites() {
-    this.favbookService.addFavbook(this.book.id).subscribe((data: any) => {
-      this.favbook.push(data);
-      this.isFavbook = this.favbook.length > 0;
-    });
-  }
 
-  removeFromFavorites() {
-    this.favbookService.deleteFavbook(this.book.id).subscribe((data: any) => {
-      this.favbook = this.favbook.filter((favbook) => favbook.id !== this.book.id);
-      this.isFavbook = false;
-      this.isFavbook = this.favbook.length > 0;
+  submitFavbook(bookId: number) {
+    this.favbookService.addFavbook(bookId).subscribe(() => {
+      this.isFavbook = true;
     });
   }
+  
 
 }

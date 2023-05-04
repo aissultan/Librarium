@@ -2,13 +2,8 @@
     <div id="const-part">
         <div id="const">
             <img src={{book.image}}>
-<<<<<<< HEAD
-            <button id="read">Read in GoodReads</button>
-            <button id="fav" (click)="addToFavorites()"> Add to favorites </button>
-=======
+            <button id="fav" (click)="submitFavbook"> Add to favorites </button>
             <button class="read">Read in GoodReads</button>
-            <button id="fav">Add to favorites</button>
-            <button class="read"  (click)="addBookshelf() ">Add to Bookshelf</button>
             <div *ngIf="statusBookshelf">
                 <div class="modal header">
                     <h4>Bookshelves</h4>
@@ -24,7 +19,6 @@
                     </fieldset>
                 </div>
             </div>
->>>>>>> origin/main
             <p id="share-book">Share with your network:</p>
             <div id="medias">
                 <a href="https://api.whatsapp.com/send?text=Ссылка%20на%20книжку%20" target="_blank"><img class="media" id="whats" src="assets/images/Whatsapp.png"></a>
