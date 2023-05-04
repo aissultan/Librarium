@@ -23,4 +23,7 @@ urlpatterns = [
     path('books/<int:id>/comments/', views.get_books_comments),
     path('books/<int:id>/reviews/', views.get_books_reviews),
     path('books-by-publisher/<str:publisher>/', views.get_books_by_publisher),
+    path('favbook/', views.FavBookListAPIView.as_view()),
+    path('favbook-create/', views.FavBookCreateAPIView.as_view()),
+    path('favbook-delete/<int:id>', views.FavBookDeleteAPIView.as_view()),
 ]

@@ -135,3 +135,23 @@ class Comment(models.Model):
             'date': self.date.isoformat(),
             'content': self.content,
         }
+
+class FavBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('book', 'user')
+        verbose_name = 'FavBook'
+        verbose_name_plural = 'FavBooks'
+
+    def __str__(self):
+        return f'FavBook #{self.id}, {self.book}, {self.user}'
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'book': self.book.title,
+            'user': self.user,
+        }
+
