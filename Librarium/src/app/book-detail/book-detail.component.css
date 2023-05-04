@@ -1,3 +1,4 @@
+
 #const-part {
   display: flex;
   flex-direction: column;
@@ -7,7 +8,7 @@
   width: 200px;
 }
 
-#read {
+.read {
   margin-left: -15px;
   width: 300px;
   height: 40px;

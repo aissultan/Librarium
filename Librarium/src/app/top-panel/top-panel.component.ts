@@ -8,13 +8,7 @@ import { LoginService } from '../services/login.service';
   styleUrls: ['./top-panel.component.css']
 })
 export class TopPanelComponent implements OnInit{
-  logged : boolean | undefined;
-  logout(){
-    localStorage.removeItem("token");
-    this.logged = false;
-    this.updateStatus()
-    
-  }
+  logged : boolean = false;
   constructor(private loginService : LoginService){}
   ngOnInit(): void {
     this.loginService.logged.subscribe(value=> this.logged = value)
@@ -22,6 +16,12 @@ export class TopPanelComponent implements OnInit{
     if(token){
     this.logged = true;
     }
+  }
+  logout(){
+    localStorage.removeItem("token");
+    this.logged = false;
+    this.updateStatus()
+    
   }
   updateStatus(){
     this.loginService.setStatus(false);
