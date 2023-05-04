@@ -23,8 +23,8 @@ export class BookDetailComponent implements OnInit {
   user: User;
   book: Book;
   loaded: boolean;
-  favbook: Favbook[] =[];
-  isFavbook: boolean = false;
+  favbooks: Favbook[] =[];
+  isFavbooks: boolean = false;
   link : string;
   comments: Comment[] = [];
   reviews: Review[] = [];
@@ -79,9 +79,9 @@ export class BookDetailComponent implements OnInit {
           this.isComments = this.comments.length > 0;
         })
 
-        this.bookService.getFavBook(this.book.id).subscribe((data: Favbook[]) => {
-          this.favbook = data;
-          this.isFavbook = this.favbook.length > 0;
+        this.bookService.getFavBooks(this.book.id).subscribe((data: Favbook[]) => {
+          this.favbooks = data;
+          this.isFavbooks = this.favbooks.length > 0;
         })
 
         this.bookService.getBooksReviews(this.book.id).subscribe((data: Review[]) => {
@@ -173,10 +173,11 @@ export class BookDetailComponent implements OnInit {
   }
 
 
-  submitFavbook(bookId: number) {
-    this.favbookService.addFavbook(bookId).subscribe(() => {
-      this.isFavbook = true;
-    });
+  submitFavbook() {
+    this.favbookService.addFavbook(this.book.id).subscribe((data: Favbook) => {
+      this.favbooks.push(data);
+
+    })
   }
   
 
