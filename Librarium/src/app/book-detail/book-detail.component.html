@@ -2,7 +2,7 @@
     <div id="const-part">
         <div id="const">
             <img src={{book.image}}>
-            <button id="fav" (click)="submitFavbook"> Add to favorites </button>
+            <button id="fav" *ngIf="isFavbooks" (click)="submitFavbook()"> Add to favorites </button>
             <button class="read">Read in GoodReads</button>
             <div *ngIf="statusBookshelf">
                 <div class="modal header">
