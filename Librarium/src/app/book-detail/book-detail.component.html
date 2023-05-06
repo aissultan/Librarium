@@ -34,6 +34,9 @@
             <p id="b-publisher">{{book.publisher}}, {{book.year}}</p>
             <p id="b-description">{{book.description}}</p>
             <p id="b-category">{{book.category.name}}</p>
+          <p *ngIf="likes !== undefined">Likes: {{ likes }}</p>
+          <button (click)="likeBook()">Like</button>
+          <button (click)="undolikeBook()">Undo</button>
         </div>
     </div>
     <div id="line"></div>
