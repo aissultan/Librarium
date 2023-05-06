@@ -29,4 +29,7 @@ urlpatterns = [
     path('books/<int:id>/comments/', views.get_books_comments),
     path('books/<int:id>/reviews/', views.get_books_reviews),
     path('books-by-publisher/<str:publisher>/', views.get_books_by_publisher),
+    
+    path('book/<int:book_id>/like/', views.like_book, name='like_book'),
+    path('book/<int:book_id>/undolike/', views.undolike_book, name='like_book'),
 ]

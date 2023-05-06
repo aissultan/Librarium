@@ -43,6 +43,9 @@
             <p id="b-publisher">{{book.publisher}}, {{book.year}}</p>
             <p id="b-description">{{book.description}}</p>
             <p id="b-category">{{book.category.name}}</p>
+          <p *ngIf="likes !== undefined">Likes: {{ likes }}</p>
+          <button (click)="likeBook()">Like</button>
+          <button (click)="undolikeBook()">Undo</button>
         </div>
     </div>
     <div id="line"></div>
@@ -52,7 +55,7 @@
         <div *ngFor="let comment of comments" class="comment">
             <div *ngIf="comment.username==user.username">
                 <p class="comment-author">{{comment.username}}</p>
-                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-content">{{comment.content}}</p>
                 <p class="comment-date">{{comment.date}}</p>
                 <button (click)="deleteComment(comment.id)" class="delete-button">Delete</button>
                 <button (click)="setComment()" class="update-button">Update</button>
@@ -64,7 +67,7 @@
             </div>
             <div *ngIf="comment.username !== user.username">
                 <p class="comment-author">{{comment.username}}</p>
-                <p class="comment-content">{{comment.content}}</p>    
+                <p class="comment-content">{{comment.content}}</p>
                 <p class="comment-date">{{comment.date}}</p>
             </div>
         </div>
@@ -125,7 +128,7 @@
             <label class="opinion">Your opinion about the book</label>
             <input type="text" [(ngModel)]="reviewComment" name="reviewComment" placeholder="In my opinion..." class="input-review">
             <button (click)="submitReview()" class="submit-button">Submit</button>
-        </form> 
+        </form>
     </div>
 
     <div id="line"></div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../services/book.service';
-import {Book, BookShelf, Comment, Review, User} from '../models';
+import {Book, Comment, Review, User, BookShelf} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
 import { BookshelfService } from '../services/bookshelf.service';
@@ -37,15 +37,17 @@ export class BookDetailComponent implements OnInit {
 
   // For getting comment input
   comment: string = '';
- 
+
   // For getting review input
   reviewComment: string = '';
   reviewRating: number = 0;
-
   // Update comment
   isUComment: boolean = false;
-  updComment: string = '';
+  liked: boolean = false;
+  undoliked: boolean=false;
 
+  updComment: string = '';
+  likes: number;
   // Update review
   isUReview: boolean = false;
   updReviewComment: string = '';
@@ -57,28 +59,32 @@ export class BookDetailComponent implements OnInit {
     this.statusBookshelf = false;
     this.loaded = true;
     this.link = '';
+    this.likes = 0;
     this.user = {} as User;
     
   }
 
   ngOnInit(): void {
+
     this.bookshelfService.getBookshelves().subscribe((data:BookShelf[])=>{
       this.bookshelves = data;
     })
+
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
       this.loaded = false;
+
       this.bookService.getBook(id).subscribe((book) => {
         this.book = book;
         this.loaded = true;
         this.link = book.link;
+        this.likes = book.likes;
 
         this.bookService.getBooksComments(this.book.id).subscribe((data: Comment[]) => {
           this.comments = data;
           this.isComments = this.comments.length > 0;
-
         })
 
         this.bookService.getBooksReviews(this.book.id).subscribe((data: Review[]) => {
@@ -98,6 +104,7 @@ export class BookDetailComponent implements OnInit {
       this.user = user;
     });
   }
+
   addBookshelf() {
     this.statusBookshelf = true;
   }
@@ -234,5 +241,29 @@ export class BookDetailComponent implements OnInit {
     }, duration);
   }
   
+
+ 
+
+  likeBook() {
+    if (!this.liked) {
+      this.bookService.booklike(this.book.id).subscribe((data: Book) => {
+        this.likes = data.likes;
+        this.liked = true;
+        this.undoliked=false;
+      });
+    }
+  }
+
+  undolikeBook() {
+    if (!this.undoliked) {
+      this.bookService.undobooklike(this.book.id).subscribe((data: Book) => {
+        this.likes = data.likes;
+        this.undoliked = true;
+        this.liked = false;
+      });
+    }
+  }
+
+
 
 }
