@@ -4,8 +4,9 @@ from django.urls import reverse_lazy
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer, BookShelfSerializer, CommentSerializer, UserSerializer, FavBookSerializer
-from .models import Category, Book, Review, BookShelf, Comment, FavBook
+from api.serializers import BookshelfSerializer
+from api.serializers import CategorySerializer, BookSerializer, ReviewSerializer,  CommentSerializer, UserSerializer
+from .models import Bookshelf, Category, Book, Review,  Comment
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from django.views.decorators.csrf import csrf_exempt
@@ -16,6 +17,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User,auth
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from rest_framework import generics
+from rest_framework import viewsets
 # def registration(request):
 #     if request.method == 'POST':
 #         first_name = request.POST['first_name']
@@ -31,7 +34,8 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from django.contrib.auth.models import User
 
 User = get_user_model()
-
+# def addFirstName(request):
+#     User.fi
 @csrf_exempt
 @api_view(['GET'])
 def get_user(request):
@@ -72,11 +76,28 @@ def update_password(request):
         user.save()
         return JsonResponse({'success': 'Password reset successfully'})
 @csrf_exempt
-@api_view(['GET', 'POST'])
+@api_view(['PUT'])
+def update_user(request):
+    if request.method == 'PUT':
+        user = request.user
+        data = json.loads(request.body)
+        first_name = data.get('first_name')
+        last_name = data.get('last_name')
+        
+        # Update the user's first name and last name
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
+        
+        # Serialize the updated user object and return the response
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+@csrf_exempt
+@api_view(['GET', 'POST'])   
 def get_bookshelves(request):
     if request.method == 'GET':
-        bookshelves = BookShelf.objects.all()
-        serializer = BookShelfSerializer(bookshelves, many=True)
+        bookshelves = Bookshelf.objects.all()
+        serializer = BookshelfSerializer(bookshelves, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 # Category views
@@ -221,33 +242,100 @@ class ReviewDeleteAPIView(DestroyAPIView):
 # BookShelf views
 
 # View for creating a new BookShelf:
-class BookShelfCreateView(CreateAPIView):
-    serializer_class = BookShelfSerializer
+
+class BookshelfListView(generics.ListCreateAPIView):
+    serializer_class = BookshelfSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Bookshelf.objects.filter(user=user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+# class BookshelfUpdateView(generics.RetrieveUpdateAPIView):
+#     serializer_class = BookshelfSerializer
+#     lookup_field = 'pk'
+#     def get_queryset(self):
+#         user = self.request.user
+#         return Bookshelf.objects.filter(user=user)
 
-# View for retrieving a specific BookShelf:
-class BookShelfDetailView(RetrieveAPIView):
-    serializer_class = BookShelfSerializer
-    queryset = BookShelf.objects.all()
+#     def perform_update(self, serializer):
+#         serializer.save()
+class BookshelfUpdateView(generics.RetrieveUpdateAPIView):
+    serializer_class = BookshelfSerializer
+    queryset = Bookshelf.objects.all()
+    lookup_field = 'pk'
+
+    def put(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
+
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+# class BookshelfAddBookView(APIView):
+#     def post(self, request, id):
+#         try:
+#             bookshelf = Bookshelf.objects.get(pk=id)
+#         except Bookshelf.DoesNotExist:
+#             return Response({'message': 'Bookshelf not found.'}, status=status.HTTP_404_NOT_FOUND)
+#         book_id = request.data.get('book')
+#         book = Book.objects.get(pk=book_id)
+#         serializer = BookSerializer(data=book)
+#         if serializer.is_valid():
+#             book = serializer.save()
+#             bookshelf.books.add(book)
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class BookshelfAddBookView(APIView):
+    serializer_class = BookSerializer
+
+    def post(self, request, id, format=None):
+        bookshelf = Bookshelf.objects.get(id=id)
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            book = serializer.save()
+            bookshelf.books.add(book)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BookshelfDeleteBookView(APIView):
+    serializer_class = BookSerializer
+
+    def delete(self, request, bookshelf_id, book_id):
+        try:
+            bookshelf = Bookshelf.objects.get(id=bookshelf_id)
+            book = Book.objects.get(pk=book_id)
+            bookshelf.books.remove(book)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except (Bookshelf.DoesNotExist, Book.DoesNotExist):
+            return Response(status=status.HTTP_404_NOT_FOUND)
+class BookshelfDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BookshelfSerializer
+    queryset = Bookshelf.objects.all()
 
 # View for updating an existing BookShelf:
 class BookShelfUpdateView(UpdateAPIView):
-    serializer_class = BookShelfSerializer
-    queryset = BookShelf.objects.all()
+    serializer_class = BookshelfSerializer
+    queryset = Bookshelf.objects.all()
 
 # View for deleting an existing BookShelf:
 class BookShelfDeleteView(DestroyAPIView):
-    serializer_class = BookShelfSerializer
-    queryset = BookShelf.objects.all()
+    serializer_class = BookshelfSerializer
+    queryset = Bookshelf.objects.all()
+    lookup_field = 'id'
 
 # View for listing all BookShelfs owned by a specific user:
 class BookShelfListView(ListAPIView):
-    serializer_class = BookShelfSerializer
-
+    serializer_class = BookshelfSerializer
+    
     def get_queryset(self):
-        return BookShelf.objects.filter(user=self.request.user)
+        return Bookshelf.objects.filter(user=self.request.user)
 
 
 # Comments views

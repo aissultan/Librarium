@@ -26,7 +26,7 @@ export interface User {
     id: number;
     username: string;
     first_name: string;
-    second_name: string
+    last_name: string;
     email: string;
     password: string;
 }
@@ -44,7 +44,7 @@ export interface Review {
 export interface BookShelf {
     id: number;
     name: string;
-    user: User;
+    email: string;
     books: Book[];
 }
 
@@ -63,10 +63,4 @@ export interface Comment {
     book: Book;
     content: string;
     date: Date;
-}
-
-export interface Favbook{
-  id:number;
-  username:string;
-  book:Book;
 }

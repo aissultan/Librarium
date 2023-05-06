@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../services/book.service';
-import {Book, Comment, Review, User, Favbook, BookShelf} from '../models';
+import {Book, Comment, Review, User, BookShelf} from '../models';
 import { CommentService } from '../comment.service';
 import { ReviewService } from '../review.service';
 import { BookshelfService } from '../services/bookshelf.service';
 import { LoginService } from '../services/login.service';
-import { FavbookService } from '../favbook.service';
-import {Observable, tap} from "rxjs";
-
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -20,17 +18,19 @@ export class BookDetailComponent implements OnInit {
 
   statusBookshelf : boolean;
   bookshelves : BookShelf[] = [];
-  newBookshelf : BookShelf;
+  name : string ='';
+  newNameBooksh :string = '';
+  selectedBooks:number[] = [];
   user: User;
   book: Book;
   loaded: boolean;
-  favbooks: Favbook[] =[];
-  isFavbooks: boolean = false;
   link : string;
   comments: Comment[] = [];
   reviews: Review[] = [];
   extraBooks: Book[] = [];
   isExtraBooks: boolean = false;
+  edit: boolean = false;
+  selectedBookshelf: number | undefined;
   // For output comments and reviews
   isComments: boolean = false;
   isReviews: boolean = false;
@@ -53,14 +53,15 @@ export class BookDetailComponent implements OnInit {
   updReviewComment: string = '';
   updRating: number = 0;
 
-  constructor(private route: ActivatedRoute, private favbookService: FavbookService ,private bookService: BookService, private commentService: CommentService,private bookshelfService : BookshelfService, private reviewService: ReviewService, private loginService: LoginService) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
+  constructor(private route: ActivatedRoute, private bookService: BookService, private commentService: CommentService,private bookshelfService : BookshelfService, private reviewService: ReviewService, private loginService: LoginService,
+    private http: HttpClient) { // ActivatedRoute is a injectable class, that's why we don't need to create instance with 'new'
     this.book = {} as Book;
-    this.newBookshelf = {} as BookShelf;
     this.statusBookshelf = false;
     this.loaded = true;
     this.link = '';
     this.likes = 0;
     this.user = {} as User;
+    
   }
 
   ngOnInit(): void {
@@ -86,13 +87,6 @@ export class BookDetailComponent implements OnInit {
           this.isComments = this.comments.length > 0;
         })
 
-
-
-        this.bookService.getFavBooks(this.book.id).subscribe((data: Favbook[]) => {
-          this.favbooks = data;
-          this.isFavbooks = this.favbooks.length > 0;
-        })
-
         this.bookService.getBooksReviews(this.book.id).subscribe((data: Review[]) => {
           this.reviews = data;
           this.isReviews = this.reviews.length > 0;
@@ -112,14 +106,34 @@ export class BookDetailComponent implements OnInit {
   }
 
   addBookshelf() {
-    // this.modalService.show(BookshelfCreateComponent,);
     this.statusBookshelf = true;
   }
-  addBook(){
-
+  createBookshelf() {
+    console.log(this.name,this.user.email)
+    const body = {name : this.name, books : [this.book]};
+    this.http.post('http://127.0.0.1:8000/api/bookshelf-create/', body).subscribe(
+      response => {
+        console.log(response);
+        this.bookshelfService.getBookshelves().subscribe((data:BookShelf[])=>{
+          this.bookshelves = data;
+        })
+        this.name = ''
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
-  createBookshelf(){
-
+  addBook(bookshelf_id: number){
+    this.bookshelfService.addBookToBookshelf(bookshelf_id,this.book).subscribe(
+      response => {
+        console.log(response);
+        this.showMessage("Book added",2000)
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
   submitReview() {
     this.reviewService.createReview(this.book.id, this.reviewComment, this.reviewRating).subscribe((data: Review) => {
@@ -134,12 +148,24 @@ export class BookDetailComponent implements OnInit {
       this.comment = '';
     })
   }
-  telega(){
-    window.open(`https://t.me/share/url?url=${this.link}&text=xssxcfscxscsc`)
+  readin(){
+    window.open(`${this.book.link}`)
   }
-
-
-
+  telega(){
+    console.log(this.book.link)
+    window.open(`https://t.me/share/url?url=${this.book.link}&text=cool book let read it`)
+  }
+  whatsapp(){
+    window.open(`https://wa.me/?text=YOUR_MESSAGE_HERE`)
+  }
+  insta(){
+    window.open(`https://www.instagram.com/direct/new/?user={username}/url?url=${this.book.link}&text=wdew}`)
+  }
+  deleteBookshelf(bookshelf_id:number){
+    this.bookshelfService.deleteBookshelf(bookshelf_id).subscribe((data:any)=>{
+      this.bookshelves = this.bookshelves.filter((bookshelf)=>bookshelf.id !==bookshelf_id)
+    })
+  }
   deleteComment(comment_id: number) {
     this.commentService.deleteComment(comment_id).subscribe((data: any) => {
       this.comments = this.comments.filter((comment) => comment.id !== comment_id)
@@ -151,7 +177,19 @@ export class BookDetailComponent implements OnInit {
       this.reviews = this.reviews.filter((review) => review.id !== review_id)
     })
   }
-
+  openEdit(bookshelf_id : number){
+    this.edit = true;
+    this.selectedBookshelf = bookshelf_id;
+  }
+  editBookshelf(bookshelf_id:number){
+    console.log(bookshelf_id)
+    const body = { name: this.newNameBooksh };
+    this.http.put(`http://127.0.0.1:8000/api/bookshelves-update/${bookshelf_id}`,body).subscribe(
+      response => console.log(response),
+      error => console.log(error)
+    )
+    this.edit = false;
+  }
   updateComment(comment_id: number) {
     this.commentService.updateComment(comment_id, this.book.id, this.updComment).subscribe((data: Comment) => {
       this.updComment = '';
@@ -180,13 +218,31 @@ export class BookDetailComponent implements OnInit {
     this.isUReview = !this.isUReview;
     console.log(this.isUComment);
   }
-
-
-  submitFavbook() {
-    this.favbookService.addFavbook(this.book.id).subscribe((data: Favbook) => {
-      this.favbooks.push(data);
-    })
+  showMessage(message: string, duration: number) {
+    // Создаем элемент div
+    const div = document.createElement('div');
+    div.textContent = message;
+    div.style.position = 'fixed';
+    div.style.top = '30%';
+    div.style.left = '50%';
+    div.style.transform = 'translateX(-50%)';
+    div.style.padding = '12px';
+    div.style.backgroundColor = '#333';
+    div.style.color = '#fff';
+    div.style.borderRadius = '6px';
+    div.style.zIndex = '9999';
+  
+    // Добавляем элемент на страницу
+    document.body.appendChild(div);
+  
+    // Через указанное время удаляем элемент
+    setTimeout(() => {
+      document.body.removeChild(div);
+    }, duration);
   }
+  
+
+ 
 
   likeBook() {
     if (!this.liked) {

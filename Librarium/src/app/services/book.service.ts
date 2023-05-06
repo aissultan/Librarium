@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
 import { AuthToken, } from '../models';
 
-import { Book, Category, Review, Comment, Favbook } from '../models';
+import { Book, Category, Review, Comment} from '../models';
 
 
 @Injectable({

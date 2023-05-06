@@ -7,10 +7,35 @@
 
 .profile-page {
   margin-left: 30px;
-  margin-top: 20px;
   margin-bottom: 30px;
 }
+#userinfo{
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+}
+#edit{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#firstbtn{
+  height: 5vh;
+  margin-top: 20px;
+}
+label{
+  margin-bottom: 10px;
+  width: 70%;
+}
+input{
+  margin-bottom: 10px;
+  width: 50%;
+}
+#secondbtn{
+  width: 20%;
 
+}
 .row {
   display: flex;
   flex-direction: row;

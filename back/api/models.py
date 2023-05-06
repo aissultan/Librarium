@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db import models 
 from django.contrib.auth import get_user_model 
- 
+
 User = get_user_model()
 
 class Category(models.Model):
@@ -39,10 +39,9 @@ class Book(models.Model):
     description = models.TextField()
     rating = models.FloatField(default=0)
     likes = models.IntegerField(default=0)
-    link = models.URLField(null=True)
+    link = models.URLField()
     objects = BookManager()
-    likes = models.IntegerField(default=0)
-    link = models.URLField(null=True)
+    
 
     class Meta:
         verbose_name = 'Book'
@@ -91,26 +90,17 @@ class Review(models.Model):
 # "BookShelf" - модель для книжных полок, которые пользователи могут
 # создавать и управлять ими, добавляя книги в избранное,
 # читаемое, прочитанное и т.д.
-class BookShelf(models.Model):
+class Bookshelf(models.Model):
     name = models.CharField(max_length=100)
-    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    books = models.ManyToManyField(Book)
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book,blank=True)
+    # bookes = ArrayField(models.IntegerField(),blank=True)
     class Meta:
         verbose_name = 'Bookshelf'
-        verbose_name_plural = 'Bookshelfs'
+        verbose_name_plural = 'Bookshelves'
 
     def __str__(self):
-        return f'Bookshelf #{self.id}, {self.name}, {self.user.username}, {self.books}'
-
-    def to_json(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'user': self.user.username,
-            'books': list(self.books.values_list('id', flat=True)),
-        }
-
+        return f'{self.user.username}\'s {self.name} Bookshelf'
 # "Comment" - модель для комментариев, которые пользователи
 # могут оставлять на страницах книг или отзывов.
 class Comment(models.Model):
@@ -135,23 +125,3 @@ class Comment(models.Model):
             'date': self.date.isoformat(),
             'content': self.content,
         }
-
-class FavBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-
-    class Meta:
-        unique_together = ('book', 'user')
-        verbose_name = 'FavBook'
-        verbose_name_plural = 'FavBooks'
-
-    def __str__(self):
-        return f'FavBook #{self.id}, {self.book}, {self.user}'
-
-    def to_json(self):
-        return {
-            'id': self.id,
-            'book': self.book.title,
-            'user': self.user,
-        }
-
