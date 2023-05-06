@@ -4,8 +4,21 @@
       <div class="col-2"><img src="/assets/images/pp.jpeg" width="150px"></div>
       <div class="col-8">
         <h1>My Profile</h1>
-        <p>Name: {{user.username}}</p>
-        <p>Email: {{user.email}}</p>
+        <div id="userinfo">
+          <div>
+            <p>Name: {{user.username}}</p>
+            <p>Email: {{user.email}}</p>
+            <p *ngIf="user.first_name">First name : {{user.first_name}}</p>
+            <p *ngIf="user.last_name">Last name : {{user.last_name}}</p>
+          </div>
+          <button *ngIf="!edit" (click)="editting()" id="firstbtn">Edit your information</button>
+          <div *ngIf="edit" id="edit">
+            <label >Change or add your firstname and lastname</label>
+            <input type="text" [(ngModel)]="first_name" placeholder="write first name">
+            <input type="text" [(ngModel)]="last_name" placeholder="write last name">
+            <button  (click)="addFirstSecondName()" id="secondbtn">Edit</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -22,6 +35,19 @@
     </div>
     <div class="profile-books" *ngIf="activeTab === 'topbook'"[ngClass]="{'active': activeTab === 'topbook'}" >
       <h2>BookShelfs</h2>
+      <div *ngFor="let bookshelf of bookshelves">{{bookshelf.name}}
+        <button (click)="deleteBookshelf(bookshelf.id)">delete</button>
+        <button *ngIf="selectedBookshelf!=bookshelf.id" (click)="openEdit(bookshelf.id)">edit</button>
+        <div *ngIf="bookshelfEdit && selectedBookshelf==bookshelf.id">
+            <label  >Write new name of the bookshelf</label>
+            <input type="text" placeholder="new name" [(ngModel)]="newNameBooksh">
+            <button (click)="editBookshelf(bookshelf.id)">edit</button>
+        </div>
+        <ul *ngFor="let book of bookshelf.books">
+          <li>{{book.title}}  </li>
+          <button (click)="deleteBook(bookshelf.id,book.id)">Delete</button>
+        </ul>
+      </div>
     </div>
     <div class="profile-reviews" *ngIf="activeTab === 'reviews'" [ngClass]="{'active': activeTab === 'reviews'}" >
       <h2>Reviews</h2>

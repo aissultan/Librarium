@@ -2,28 +2,36 @@
     <div id="const-part">
         <div id="const">
             <img src={{book.image}}>
-            <button class="read">Read in GoodReads</button>
+            <button class="read" (click)="readin()">Read in GoodReads</button>
             <button id="fav">Add to favorites</button>
             <button class="read"  (click)="addBookshelf() ">Add to Bookshelf</button>
             <div *ngIf="statusBookshelf">
                 <div class="modal header">
-                    <h4>Bookshelves</h4>
+                    <h3>Bookshelves</h3>
                 </div>
                 <div class="modal body">
                     <p>Select the Bookshelf, where you want to add book</p>
                     <ul>
-                        <li *ngFor="let bookshelf of bookshelves" (click)="addBook()">{{bookshelf.name}}</li>
+                        <li *ngFor="let bookshelf of bookshelves" >
+                            <button (click)="addBook(bookshelf.id)">{{bookshelf.name}}</button>>
+                            <button (click)="deleteBookshelf(bookshelf.id)">delete</button>
+                            <button *ngIf="!edit" (click)="openEdit(bookshelf.id)">edit</button>
+                            <div *ngIf="edit && selectedBookshelf==bookshelf.id">
+                                <label  >Write new name of the bookshelf</label>
+                                <input type="text" placeholder="new name" [(ngModel)]="newNameBooksh">
+                                <button (click)="editBookshelf(bookshelf.id)">edit</button>
+                            </div>
+                        </li>
                     </ul>
-                    <fieldset>
-                        <input type="text" [(ngModel)]="newBookshelf" >
-                        <button (click)="createBookshelf()">Add</button>
-                    </fieldset>
+                    <label>Create new Bookshelf</label>
+                    <input type="text" [(ngModel)]="name"  placeholder="Write name of new bookshelf">
+                    <button (click)="createBookshelf()">Add</button>
                 </div>
             </div>
             <p id="share-book">Share with your network:</p>
             <div id="medias">
-                <a href="https://api.whatsapp.com/send?text=Ссылка%20на%20книжку%20" target="_blank"><img class="media" id="whats" src="assets/images/Whatsapp.png"></a>
-                <a href="https://www.instagram.com/share?url=Ссылка%20на%20книжку" target="_blank"><img class="media" src="assets/images/instagram_1.png"></a>
+                <a (click)="whatsapp()" target="_blank"><img class="media" id="whats" src="assets/images/Whatsapp.png"></a>
+                <a (click)="insta()" target="_blank"><img class="media" src="assets/images/instagram_1.png"></a>
                 <a (click)="telega()" target="_blank"><img class="media" src="assets/images/telegram.png"></a>
             </div>
         </div>

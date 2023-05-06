@@ -7,7 +7,9 @@
   top: 80px;
   width: 200px;
 }
-
+li{
+  cursor: pointer;
+}
 .read {
   margin-left: -15px;
   width: 300px;

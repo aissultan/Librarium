@@ -15,6 +15,7 @@ export class BooksComponent implements OnInit {
   categoryBooks: Book[] = [];
   currentCategory: string = 'All';
   currentSorting: string = 'None';
+  year :boolean = false;
 
   searchText: string = '';
 
@@ -46,10 +47,19 @@ export class BooksComponent implements OnInit {
   }
 
   sortByYear() {
-    this.books.sort(  );
+    if (this.year ){
+      this.bookService.getBooks().subscribe((data: Book[]) => {
+        this.books = data;
+        this.year = false;
+      })
+    }
+    else{
+      this.books.sort( (a, b) => a.year - b.year );
+      this.year = true;
+    }
   }
 
   sortByRating() {
-
+    this.books.sort( (a, b) => a.rating - b.rating);
   }
 }

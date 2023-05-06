@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BookShelf } from '../models';
+import { Book, BookShelf } from '../models';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -11,5 +11,18 @@ export class BookshelfService {
   constructor(private client : HttpClient) { }
   getBookshelves(): Observable<BookShelf[]>{
     return this.client.get<BookShelf[]>(`${this.BASE_URL}/bookshelves/`)
+  }
+  createBookshelf(data: any){
+    return this.client.post(`${this.BASE_URL}/bookshelf-create/`, data);
+  }
+  addBookToBookshelf(bookshelfId: number, book: Book): Observable<Book> {
+    const url = `${this.BASE_URL}/bookshelves/${bookshelfId}/addbook/`;
+    return this.client.post<Book>(url, book);
+  }
+  deleteBookshelf(bookshelfId:number):Observable<any>{
+    return this.client.delete(`${this.BASE_URL}/bookshelves-delete/${bookshelfId}`)
+  }
+  deleteBook(bookshelfId: number, bookId: number): Observable<any> {
+    return this.client.delete(`${this.BASE_URL}/bookshelves/${bookshelfId}/books/${bookId}`);
   }
 }
