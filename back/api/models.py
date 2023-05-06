@@ -41,7 +41,7 @@ class Book(models.Model):
     likes = models.IntegerField(default=0)
     link = models.URLField(null=True)
     objects = BookManager()
-    likes = models.IntegerField(null=True)
+    likes = models.IntegerField(default=0)
     link = models.URLField(null=True)
 
     class Meta:

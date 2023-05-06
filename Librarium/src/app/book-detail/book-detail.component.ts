@@ -7,6 +7,7 @@ import { ReviewService } from '../review.service';
 import { BookshelfService } from '../services/bookshelf.service';
 import { LoginService } from '../services/login.service';
 import { FavbookService } from '../favbook.service';
+import {Observable, tap} from "rxjs";
 
 
 
@@ -40,11 +41,13 @@ export class BookDetailComponent implements OnInit {
   // For getting review input
   reviewComment: string = '';
   reviewRating: number = 0;
-
   // Update comment
   isUComment: boolean = false;
-  updComment: string = '';
+  liked: boolean = false;
+  undoliked: boolean=false;
 
+  updComment: string = '';
+  likes: number;
   // Update review
   isUReview: boolean = false;
   updReviewComment: string = '';
@@ -56,13 +59,16 @@ export class BookDetailComponent implements OnInit {
     this.statusBookshelf = false;
     this.loaded = true;
     this.link = '';
+    this.likes = 0;
     this.user = {} as User;
   }
 
   ngOnInit(): void {
+
     this.bookshelfService.getBookshelves().subscribe((data:BookShelf[])=>{
       this.bookshelves = data;
     })
+
 
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.route.paramMap.subscribe((params) => {
@@ -73,11 +79,14 @@ export class BookDetailComponent implements OnInit {
         this.book = book;
         this.loaded = true;
         this.link = book.link;
+        this.likes = book.likes;
 
         this.bookService.getBooksComments(this.book.id).subscribe((data: Comment[]) => {
           this.comments = data;
           this.isComments = this.comments.length > 0;
         })
+
+
 
         this.bookService.getFavBooks(this.book.id).subscribe((data: Favbook[]) => {
           this.favbooks = data;
@@ -176,9 +185,29 @@ export class BookDetailComponent implements OnInit {
   submitFavbook() {
     this.favbookService.addFavbook(this.book.id).subscribe((data: Favbook) => {
       this.favbooks.push(data);
-
     })
   }
-  
+
+  likeBook() {
+    if (!this.liked) {
+      this.bookService.booklike(this.book.id).subscribe((data: Book) => {
+        this.likes = data.likes;
+        this.liked = true;
+        this.undoliked=false;
+      });
+    }
+  }
+
+  undolikeBook() {
+    if (!this.undoliked) {
+      this.bookService.undobooklike(this.book.id).subscribe((data: Book) => {
+        this.likes = data.likes;
+        this.undoliked = true;
+        this.liked = false;
+      });
+    }
+  }
+
+
 
 }

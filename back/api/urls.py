@@ -26,4 +26,6 @@ urlpatterns = [
     path('favbook/', views.FavBookListAPIView.as_view()),
     path('favbook-create/', views.FavBookCreateAPIView.as_view()),
     path('favbook-delete/<int:id>', views.FavBookDeleteAPIView.as_view()),
+    path('book/<int:book_id>/like/', views.like_book, name='like_book'),
+    path('book/<int:book_id>/undolike/', views.undolike_book, name='like_book'),
 ]

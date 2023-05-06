@@ -49,4 +49,13 @@ export class BookService {
     return this.client.get<Favbook[]>(`${this.BASE_URL}/favbook/`)
   }
 
+  booklike(id:number):Observable<Book>{
+    return this.client.get<Book>(`${this.BASE_URL}/book/${id}/like`)
+  }
+
+  undobooklike(id:number):Observable<Book>{
+    return this.client.get<Book>(`${this.BASE_URL}/book/${id}/undolike`)
+  }
+
+
 }
