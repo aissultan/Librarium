@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
+import { AuthToken, } from '../models';
+
 import { Book, Category, Review, Comment } from '../models';
 
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class BookService {
   BASE_URL = 'http://127.0.0.1:8000/api';
+  logged: boolean = false;
 
   constructor(private client: HttpClient) {}
 
@@ -35,6 +39,14 @@ export class BookService {
   getBooksComments(id: number): Observable<Comment[]> {
     console.log(id)
     return this.client.get<Comment[]>(`${this.BASE_URL}/books/${id}/comments/`)
+  }
+  
+  getBooksByPublisher(publisher: string): Observable<Book[]> {
+    return this.client.get<Book[]>(`${this.BASE_URL}/books-by-publisher/${publisher}/`)
+  }
+
+  getBookByReview(review_id: number): Observable<Book> {
+    return this.client.get<Book>(`${this.BASE_URL}/get-book-by-review/${review_id}`)
   }
   
 }

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Book, Review, BookShelf, Comment
+from .models import Category, Book, Review, BookShelf, Comment, SavedBook
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -7,7 +7,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'category')
+    list_display = ('id', 'title', 'author', 'category', 'publisher')
     list_filter = ('category',)
     search_fields = ('title', 'author', 'category__name')
 
@@ -26,5 +26,11 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id', 'book', 'user', 'rating', 'comment')
+    list_filter = ('book', 'user')
+    search_fields = ('book', 'user')
+
+@admin.register(SavedBook)
+class SavedBookAdmin(admin.ModelAdmin):
+    list_display = ('id', 'book', 'user')
     list_filter = ('book', 'user')
     search_fields = ('book', 'user')

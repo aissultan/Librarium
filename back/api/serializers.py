@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Book, Review, BookShelf, Comment
+from .models import Category, Book, Review, BookShelf, Comment, SavedBook
 from django.contrib.auth.models import User
 
 
@@ -26,6 +26,8 @@ class BookSerializer(serializers.Serializer):
     category = CategorySerializer()
     description = serializers.CharField()
     rating = serializers.FloatField()
+    likes = serializers.FloatField()
+    link = serializers.URLField()
 
     def create(self, validated_data):
         category_data = validated_data.pop('category')
@@ -49,32 +51,35 @@ class BookSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username']
+        fields = ['id','username','email']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    user = UserSerializer()
+    username = serializers.ReadOnlyField(source='user.username')
 
     class Meta:
         model = Review
-        fields = ['id', 'book', 'user', 'rating', 'comment']
-
+        fields = ['id', 'book', 'user', 'username', 'rating', 'comment', 'date']
 
 class BookShelfSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True)
-    user = UserSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = BookShelf
         fields = ['id', 'name', 'user', 'books']
 
-
 class CommentSerializer(serializers.ModelSerializer):
-    book = BookSerializer()
-    user = UserSerializer()
+    username = serializers.ReadOnlyField(source='user.username')
+    # user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Comment
-        fields = ['id', 'book', 'user', 'content', 'date']
+        fields = ['id', 'book', 'user', 'username', 'content', 'date']
 
+class SavedBookSerializer(serializers.ModelSerializer):
+    username = serializers.ReadOnlyField(source='user.username')
+
+    class Meta:
+        model = SavedBook
+        fields = ['id', 'book', 'user', 'username']

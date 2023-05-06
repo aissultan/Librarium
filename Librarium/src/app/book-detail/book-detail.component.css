@@ -1,97 +1,350 @@
-/* Apply a font family and size to the entire page */
-body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
+#const-part {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  left: 150px;
+  top: 80px;
+  width: 200px;
 }
   
-  /* Style for the book detail container */
-#detail {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 100px;
-    margin-left: 200px;
-    margin-right: 100px;
+#read {
+  margin-left: -15px;
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: #3F8363;
+  color: white;
+  font-size: 17px;
 }
   
-  /* Style for the book image */
-#detail img {
+#fav {
+  border: 1px solid #3F8363;
+  background-color: rgb(255, 255, 255);
+  margin-left: -15px;
     width: 300px;
-    height: 400px;
-    object-fit: cover;
-    margin-right: 20px;
+  height: 40px;
+  border-radius: 20px;
+  color: rgb(0, 0, 0);
+  font-size: 17px;
 }
   
-  /* Style for the book title */
-#detail p:first-child {
-    font-size: 24px;
+#fav:hover, #read {
+  cursor: pointer;
+}
+
+#share-book {
+  width: 300px;
+  font-size: 18.5px;
+  margin-left: 40px;
+}
+
+#medias {
+  margin-left: 50px;
+}
+
+#characteristics {
+  margin-top: -480px;
+  margin-left: 480px; 
+  width: 920px;
+}
+
+#b-title {
+  font-family: 'Playfair Display';  
     font-weight: bold;
-    margin-bottom: 10px;
+  font-size: 44px;
+  color: #1e1915;
 }
   
-  /* Style for the book author */
-#detail p:nth-child(2) {
-    font-size: 18px;
+#b-author {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 26px;
+  color: #413e3a;
+  margin-top: -30px;
+}
+
+#b-description {
+  font-family: 'Proxima Nova', sans-serif;
+  color: #1e1b19;
+}
+
+#b-category {
     font-style: italic;
-    margin-bottom: 10px;
 }
   
-  /* Style for the book description */
-  #detail p:nth-child(3) {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 10px;
+#line {
+  margin-left: 480px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 60%;
+  border-bottom: 1px solid black;
   }
   
-  /* Style for the book title (again) */
-  #detail p:last-child {
-    font-size: 18px;
+#comments, #reviews {
+  margin-left: 480px; /* adjust the margin value to your preference */
+}
+
+#comments p, #reviews p {
+  margin-bottom: 5px;
+}
+
+#const img {
+  width: 270px;
+  height: 320px;
+}
+
+#const button {
+  margin-top: 10px;
+}
+
+#const #share-book {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+#const .media {
+  width: 30px;
+  height: 30px;
+  margin: 5px 10px;
+}
+
+.cool-word {
+  padding-left: 2px;
+  font-size: 30px;
+  padding-bottom: 20px;
+}
+
+/* Comments */
+
+#comments {
+  margin: 20px;
+  padding: 10px;
+  width: 59%;
+  margin-left: 480px;
+  border: 1px solid #acc7b8;
+  background-color: #259f56;
+  border-radius: 6px;
+}
+
+.cool-word {
+  font-size: 24px;
     font-weight: bold;
+  color: #ffffff;
+  margin-top: 7px;
+  margin-left: 5px;
+}
+
+.comment {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.comment-author {
+  font-weight: bold;
+  font-size: 25px;
+  margin-top: 0;
+  border-top: 0;
+  margin-bottom: 0;
+  border-top: 0;
+}
+
+.comment-content {
     margin-top: 10px;
+  margin-bottom: 0px;
+  font-family:'Proxima Nova', sans-serif;
   }
 
-  #buttons {
-    margin-left: 1200px;
+.comment-date {
+  font-style: italic;
+  color: #999;
+  margin-top: 0px;
   }
   
-  /* Style for the buttons */
-  button {
-    background-color: #4CAF50;
+.delete-button {
+  background-color: #f44336; /* Red */
+  color: white;
     border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  margin-left: 700px;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f; /* Darker red */
+}
+
+.update-button {
+  background-color: #4CAF50; /* Green */
     color: white;
-    padding: 10px;
+  border: none;
+  padding: 8px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.update-button:hover {
+  background-color: #3e8e41; /* Darker green */
+}
+
+.no-content {
+  font-style: italic;
+  font-size: 25px;
+  color: rgb(211, 210, 210);
+  margin-left: 10px;
+  margin-top: 0;
+}
+
+.leave {
+  display: block;
+  margin-bottom: 10px;
     font-size: 16px;
-    margin-right: 10px;
-    /* margin-left: 50px; */
-    border-radius: 5px;
-    margin-top: 35px;
+  color:rgb(255, 255, 255);
+  margin-top: 20px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
+#special {
+  color: green;
+  font-weight: bold;
+}
+
+.rate {
+  margin-left: 15px;
+}
+
+.input-comment {
+  width: 92%;
+  padding: 5px;
+  height: 20px;
+  margin-right: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.ok-button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
     cursor: pointer;
   }
   
-  button:hover {
+.ok-button:hover {
     background-color: #3e8e41;
   }
   
-  /* Style for the line */
-  #line {
-    border-top: 1px solid black;
-    margin: 20px 0;
+/* Reviews */
+#reviews {
+  background-color: #FFD700;	
+  padding: 20px;
+  width: 58%;
+  border-radius: 6px;
   }
   
-  /* Style for the reviews and comments containers */
-  #reviews, #comments {
+/* Review writing part */
+
+#would-you {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: 25px;
+}
+
+#help-others {
+  font-size: 22px;
+  font-style: italic;
+  margin-left: 10px;
+}
+
+.opinion {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #4CAF50;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.input-review {
+  display: block;
+  width: 96%;
     margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1.2em;
+  margin-left: 8px;
   }
   
-  /* Style for the "Book details are loading..." message */
-  h2 {
-    font-size: 24px;
+.submit-button {
+  display: block;
+  width: 98%;
+  padding: 10px;
+  border: none;
+  margin-left: 8px;
+  border-radius: 5px;
+  background-color: #99de4f;
+  color: #fff;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#submit-button:hover {
+  background-color: #1a8d2f;
+}
+
+/* Extra-books */
+
+#extra-books {
+  margin-bottom: 20px;
+  margin-left: 480px;
+  padding-left: 20px;
+}
+
+#extra-word {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+#extra-image {
+  width: 200px;
+  height: 250px;
+}
+
+#extra-title {
+  font-family: 'Libre Baskerville', serif;
     font-weight: bold;
-    text-align: center;
-    margin-top: 50px;
+  margin: 5px 18px;
   }
   
+#extra-author {
+  margin-left: 30px;
+  font-size: 15px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+#extra-year {
+  margin-top: -10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #333;
+  margin-left: 80px;
+}

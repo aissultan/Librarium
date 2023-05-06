@@ -15,19 +15,25 @@ export interface Category {
     name: string;
 }
 
+export interface AuthToken{
+    token : string;
+}
+
 export interface User {
     id: number;
-    name: string;
+    username: string;
     email: string;
     password: string;
 }
 
+
 export interface Review {
     id: number;
     book: Book;
-    user: User;
+    username: string;
     rating: number;
     comment: string;
+    date: Date;
 }
 
 export interface BookShelf {
@@ -37,10 +43,26 @@ export interface BookShelf {
     books: Book[];
 }
 
+export interface User {
+    id: number;
+    email: string;
+    username: string;
+    password: string;
+    is_staff: boolean;
+    is_superuser: boolean;
+}  
+
 export interface Comment {
     id: number;
+    username: string;
     book: Book;
-    user: User;
     content: string;
     date: Date;
+}
+
+
+export interface SavedBook {
+    id: number;
+    book: Book;
+    username: string;
 }
